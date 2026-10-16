@@ -218,3 +218,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# GitPulse application and local artifacts
+.env
+.env.*
+!.env.example
+.venv/
+node_modules/
+.next/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+test-results/
+playwright-report/
+artifacts/
+*.log
+*.tsbuildinfo
+next-env.d.ts
+
+
+# TypeScript source; overrides the Python template lib/ rule.
+!/lib/
+!/lib/*.ts

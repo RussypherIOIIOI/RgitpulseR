@@ -1,0 +1,642 @@
+{
+  "provenance": "Entirely synthetic fixture. Reopened wording describes a current state, not an event log.",
+  "as_of": "2026-10-12T12:00:00+00:00",
+  "repository": {
+    "id": 424242,
+    "full_name": "example/observatory",
+    "private": false
+  },
+  "issues": [
+    {
+      "id": 8001,
+      "number": 1,
+      "title": "Improve keyboard navigation in the command palette",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-10T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/1"
+    },
+    {
+      "id": 8002,
+      "number": 2,
+      "title": "Document the local development workflow",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-07T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/2"
+    },
+    {
+      "id": 8003,
+      "number": 3,
+      "title": "Pagination skips the final result",
+      "state": "open",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-10-04T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/3"
+    },
+    {
+      "id": 8004,
+      "number": 4,
+      "title": "Add support for UTC date exports",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-28T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/4"
+    },
+    {
+      "id": 8005,
+      "number": 5,
+      "title": "Restore focus after closing a dialog",
+      "state": "closed",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-09-18T12:00:00+00:00",
+      "updated_at": "2026-10-11T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/5"
+    },
+    {
+      "id": 8006,
+      "number": 6,
+      "title": "Search should include deleted authors",
+      "state": "open",
+      "user": null,
+      "created_at": "2026-09-02T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/6"
+    },
+    {
+      "id": 8007,
+      "number": 7,
+      "title": "Reduce query time on repository overview",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-08-08T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/7"
+    },
+    {
+      "id": 8008,
+      "number": 8,
+      "title": "Reopened: preserve filters when navigating back",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-07-04T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/8"
+    },
+    {
+      "id": 8009,
+      "number": 9,
+      "title": "Improve keyboard navigation in the command palette",
+      "state": "open",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-06-14T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/9"
+    },
+    {
+      "id": 8010,
+      "number": 10,
+      "title": "Document the local development workflow",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-04-15T12:00:00+00:00",
+      "updated_at": "2026-10-11T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/10"
+    },
+    {
+      "id": 8011,
+      "number": 11,
+      "title": "Pagination skips the final result",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-09T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/11"
+    },
+    {
+      "id": 8012,
+      "number": 12,
+      "title": "Add support for UTC date exports",
+      "state": "open",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-10-06T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/12"
+    },
+    {
+      "id": 8013,
+      "number": 13,
+      "title": "Restore focus after closing a dialog",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-10T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/13"
+    },
+    {
+      "id": 8014,
+      "number": 14,
+      "title": "Search should include deleted authors",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-07T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/14"
+    },
+    {
+      "id": 8015,
+      "number": 15,
+      "title": "Reduce query time on repository overview",
+      "state": "closed",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-10-04T12:00:00+00:00",
+      "updated_at": "2026-10-11T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/15"
+    },
+    {
+      "id": 8016,
+      "number": 16,
+      "title": "Reopened: preserve filters when navigating back",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-28T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/16"
+    },
+    {
+      "id": 8017,
+      "number": 17,
+      "title": "Improve keyboard navigation in the command palette",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-09-18T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/17"
+    },
+    {
+      "id": 8018,
+      "number": 18,
+      "title": "Document the local development workflow",
+      "state": "open",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-09-02T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/18"
+    },
+    {
+      "id": 8019,
+      "number": 19,
+      "title": "Pagination skips the final result",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-08-08T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/19"
+    },
+    {
+      "id": 8020,
+      "number": 20,
+      "title": "Add support for UTC date exports",
+      "state": "closed",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-07-04T12:00:00+00:00",
+      "updated_at": "2026-10-11T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/20"
+    },
+    {
+      "id": 8021,
+      "number": 21,
+      "title": "Restore focus after closing a dialog",
+      "state": "open",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-06-14T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/21"
+    },
+    {
+      "id": 8022,
+      "number": 22,
+      "title": "Search should include deleted authors",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-04-15T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/22"
+    },
+    {
+      "id": 8023,
+      "number": 23,
+      "title": "Reduce query time on repository overview",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-09T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/23"
+    },
+    {
+      "id": 8024,
+      "number": 24,
+      "title": "Reopened: preserve filters when navigating back",
+      "state": "open",
+      "user": {
+        "login": "river-chen"
+      },
+      "created_at": "2026-10-06T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/issues/24"
+    },
+    {
+      "id": 8025,
+      "number": 25,
+      "title": "Fix pagination cursor boundaries",
+      "state": "closed",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-11T11:00:00+00:00",
+      "updated_at": "2026-10-11T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": "2026-10-11T12:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/25",
+      "pull_request": {}
+    }
+  ],
+  "pulls": [
+    {
+      "id": 8025,
+      "number": 25,
+      "title": "Fix pagination cursor boundaries",
+      "state": "closed",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-11T11:00:00+00:00",
+      "updated_at": "2026-10-11T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": "2026-10-11T12:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/25"
+    },
+    {
+      "id": 8026,
+      "number": 26,
+      "title": "Ship accessible chart summaries",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-04T08:00:00+00:00",
+      "updated_at": "2026-10-04T11:00:00+00:00",
+      "closed_at": "2026-10-04T11:00:00+00:00",
+      "merged_at": "2026-10-04T11:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/26"
+    },
+    {
+      "id": 8027,
+      "number": 27,
+      "title": "Refactor the import transaction",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-27T05:00:00+00:00",
+      "updated_at": "2026-09-27T10:00:00+00:00",
+      "closed_at": "2026-09-27T10:00:00+00:00",
+      "merged_at": "2026-09-27T10:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/27"
+    },
+    {
+      "id": 8028,
+      "number": 28,
+      "title": "Update dependency lockfiles",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-10T05:00:00+00:00",
+      "updated_at": "2026-10-12T12:00:00+00:00",
+      "closed_at": "2026-10-11T12:00:00+00:00",
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/pull/28"
+    },
+    {
+      "id": 8029,
+      "number": 29,
+      "title": "Add repository activity filters",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-12T20:00:00+00:00",
+      "updated_at": "2026-09-13T08:00:00+00:00",
+      "closed_at": "2026-09-13T08:00:00+00:00",
+      "merged_at": "2026-09-13T08:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/29"
+    },
+    {
+      "id": 8030,
+      "number": 30,
+      "title": "Fix pagination cursor boundaries",
+      "state": "closed",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-09-05T07:00:00+00:00",
+      "updated_at": "2026-09-06T07:00:00+00:00",
+      "closed_at": "2026-09-06T07:00:00+00:00",
+      "merged_at": "2026-09-06T07:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/30"
+    },
+    {
+      "id": 8031,
+      "number": 31,
+      "title": "Ship accessible chart summaries",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-08-28T06:00:00+00:00",
+      "updated_at": "2026-08-30T06:00:00+00:00",
+      "closed_at": "2026-08-30T06:00:00+00:00",
+      "merged_at": "2026-08-30T06:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/31"
+    },
+    {
+      "id": 8032,
+      "number": 32,
+      "title": "Refactor the import transaction",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-10T11:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/pull/32"
+    },
+    {
+      "id": 8033,
+      "number": 33,
+      "title": "Update dependency lockfiles",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-08-16T01:00:00+00:00",
+      "updated_at": "2026-08-16T04:00:00+00:00",
+      "closed_at": "2026-08-16T04:00:00+00:00",
+      "merged_at": "2026-08-16T04:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/33"
+    },
+    {
+      "id": 8034,
+      "number": 34,
+      "title": "Add repository activity filters",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-08-09T07:00:00+00:00",
+      "updated_at": "2026-08-09T12:00:00+00:00",
+      "closed_at": "2026-08-09T12:00:00+00:00",
+      "merged_at": "2026-08-09T12:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/34"
+    },
+    {
+      "id": 8035,
+      "number": 35,
+      "title": "Fix pagination cursor boundaries",
+      "state": "closed",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-08-02T04:00:00+00:00",
+      "updated_at": "2026-08-02T11:00:00+00:00",
+      "closed_at": "2026-08-02T11:00:00+00:00",
+      "merged_at": "2026-08-02T11:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/35"
+    },
+    {
+      "id": 8036,
+      "number": 36,
+      "title": "Ship accessible chart summaries",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-07-25T22:00:00+00:00",
+      "updated_at": "2026-07-26T10:00:00+00:00",
+      "closed_at": "2026-07-26T10:00:00+00:00",
+      "merged_at": "2026-07-26T10:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/36"
+    },
+    {
+      "id": 8037,
+      "number": 37,
+      "title": "Refactor the import transaction",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-10T09:00:00+00:00",
+      "updated_at": "2026-10-11T09:00:00+00:00",
+      "closed_at": "2026-10-11T09:00:00+00:00",
+      "merged_at": "2026-10-11T09:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/37"
+    },
+    {
+      "id": 8038,
+      "number": 38,
+      "title": "Update dependency lockfiles",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-02T08:00:00+00:00",
+      "updated_at": "2026-10-04T08:00:00+00:00",
+      "closed_at": "2026-10-04T08:00:00+00:00",
+      "merged_at": "2026-10-04T08:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/38"
+    },
+    {
+      "id": 8039,
+      "number": 39,
+      "title": "Add repository activity filters",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-27T06:00:00+00:00",
+      "updated_at": "2026-09-27T07:00:00+00:00",
+      "closed_at": "2026-09-27T07:00:00+00:00",
+      "merged_at": "2026-09-27T07:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/39"
+    },
+    {
+      "id": 8040,
+      "number": 40,
+      "title": "Fix pagination cursor boundaries",
+      "state": "open",
+      "user": {
+        "login": "dependabot[bot]"
+      },
+      "created_at": "2026-10-10T09:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/pull/40"
+    },
+    {
+      "id": 8041,
+      "number": 41,
+      "title": "Ship accessible chart summaries",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-13T00:00:00+00:00",
+      "updated_at": "2026-09-13T05:00:00+00:00",
+      "closed_at": "2026-09-13T05:00:00+00:00",
+      "merged_at": "2026-09-13T05:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/41"
+    },
+    {
+      "id": 8042,
+      "number": 42,
+      "title": "Refactor the import transaction",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-09-05T21:00:00+00:00",
+      "updated_at": "2026-09-06T04:00:00+00:00",
+      "closed_at": "2026-09-06T04:00:00+00:00",
+      "merged_at": "2026-09-06T04:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/42"
+    },
+    {
+      "id": 8043,
+      "number": 43,
+      "title": "Update dependency lockfiles",
+      "state": "closed",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-08-30T00:00:00+00:00",
+      "updated_at": "2026-08-30T12:00:00+00:00",
+      "closed_at": "2026-08-30T12:00:00+00:00",
+      "merged_at": "2026-08-30T12:00:00+00:00",
+      "html_url": "https://github.com/example/observatory/pull/43"
+    },
+    {
+      "id": 8044,
+      "number": 44,
+      "title": "Add repository activity filters",
+      "state": "open",
+      "user": {
+        "login": "morgan-dev"
+      },
+      "created_at": "2026-10-09T12:00:00+00:00",
+      "updated_at": "2026-10-12T11:00:00+00:00",
+      "closed_at": null,
+      "merged_at": null,
+      "html_url": "https://github.com/example/observatory/pull/44"
+    }
+  ]
+}

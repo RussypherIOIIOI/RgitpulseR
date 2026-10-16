@@ -1,0 +1,14 @@
+.git
+.venv
+node_modules
+.next
+.env*
+artifacts
+__pycache__
+*.egg-info
+.pytest_cache
+.ruff_cache
+*.tsbuildinfo
+*.log
+gitpulse_initial_build.txt
+gitpulse-prompt+tools-execution.txt

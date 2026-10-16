@@ -1,0 +1,41 @@
+name: gitpulse
+services:
+  db:
+    image: postgres:18@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+    environment:
+      POSTGRES_USER: gitpulse
+      POSTGRES_PASSWORD: local-demo-only
+      POSTGRES_DB: gitpulse_demo
+    ports:
+      - "127.0.0.1:${GITPULSE_DB_PORT:-55440}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gitpulse -d gitpulse_demo"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  app:
+    image: gitpulse-tmc:local
+    build: .
+    ports:
+      - "127.0.0.1:${GITPULSE_WEB_PORT:-3017}:3000"
+    environment:
+      DATABASE_URL: postgresql://gitpulse:local-demo-only@db:5432/gitpulse_demo
+      GITPULSE_MODE: demo
+      GITPULSE_REPO: example/observatory
+      GITPULSE_REFRESH_ENABLED: ${GITPULSE_REFRESH_ENABLED:-false}
+      GITPULSE_REFRESH_TOKEN: ${GITPULSE_REFRESH_TOKEN:-}
+      GITPULSE_ORIGIN: http://localhost:${GITPULSE_WEB_PORT:-3017}
+      GITPULSE_PYTHON: /opt/venv/bin/python
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      start_period: 15s
+      retries: 20
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  pgdata:

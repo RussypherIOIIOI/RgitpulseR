@@ -1,0 +1,73 @@
+name: Deterministic GitPulse checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+        env:
+          POSTGRES_USER: gitpulse
+          POSTGRES_PASSWORD: ci-disposable-only
+          POSTGRES_DB: gitpulse_browser
+        ports: ['55440:5432']
+        options: >-
+          --health-cmd "pg_isready -U gitpulse -d gitpulse_browser"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      DATABASE_URL: postgresql://gitpulse:ci-disposable-only@127.0.0.1:55440/gitpulse_browser
+      TEST_DATABASE_URL: postgresql://gitpulse:ci-disposable-only@127.0.0.1:55440/gitpulse_test
+      TEST_CLI_DATABASE_URL: postgresql://gitpulse:ci-disposable-only@127.0.0.1:55440/gitpulse_cli
+      TEST_BROWSER_DATABASE_URL: postgresql://gitpulse:ci-disposable-only@127.0.0.1:55440/gitpulse_browser
+      GITPULSE_MODE: demo
+      GITPULSE_REFRESH_ENABLED: 'true'
+      GITPULSE_REFRESH_TOKEN: ci-test-only-maintainer-key-0123456789
+      GITPULSE_ORIGIN: http://localhost:3017
+      GITPULSE_BROWSER_URL: http://localhost:3017
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.10'
+          python-version: '3.12'
+      - name: Install locked dependencies
+        run: |
+          uv sync --frozen --extra dev
+          npm ci --ignore-scripts
+          uv run playwright install --with-deps chromium
+      - name: Prepare dedicated databases
+        run: |
+          docker exec ${{ job.services.postgres.id }} createdb -U gitpulse gitpulse_test
+          docker exec ${{ job.services.postgres.id }} createdb -U gitpulse gitpulse_cli
+          uv run gitpulse migrate
+          uv run gitpulse import
+      - name: Python and PostgreSQL contracts
+        run: |
+          uv run pytest -m 'not browser' -q
+          uv run ruff check src tests
+          uv run ruff format --check src tests
+      - name: TypeScript, lint and production build
+        run: |
+          npm test
+          npm run check
+          npm run lint
+          npm run build
+          npm audit --omit=dev
+      - name: Browser workflow against production server
+        run: |
+          node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3017 > /tmp/gitpulse-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:3017/api/health; then break; fi
+            sleep 1
+          done
+          uv run pytest tests/test_browser.py -q
