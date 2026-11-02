@@ -1,4 +1,55 @@
-# Verification record — October 15, 2026
+# Verification record
+
+## Release hardening — November 2, 2026
+
+This section supersedes the historical dependency/CI/production-browser caveats
+below. Public deployment remains unverified; no production resources were created.
+
+- Clean local/remote base: `1eee97dd6706db2c1dd8c493c011204aecb225ad`.
+  [Its hosted CI passed](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/38938786757):
+  41 Python/PostgreSQL tests, 3 production-server browser tests, 2 TypeScript tests,
+  lint, type checks and build. The earlier production-refresh policy blocker was
+  subsequently covered by those CI browser tests.
+- Patched certifi from 2026.7.22 to 2026.10.23, regenerated hashes with uv 0.10.10,
+  and added pinned pip-audit 2.10.1 plus lock/export consistency checks to CI.
+  Baseline audit failed; patched Python runtime audit returned zero findings.
+  npm runtime audit also returned zero findings. Full npm audit retains 16 moderate
+  development entries from one minimatch advisory; see [security evidence](release-security.md).
+- Fresh real PostgreSQL 18 tests: **41 passed, 3 browser tests deselected**, no
+  integration skips. Fresh browser tests against the rebuilt production Docker
+  server: **3 passed**. Tests cover fonts, paired chart colors, sampled contrast,
+  keyboard access, responsive layout, search/pagination, refresh authorization,
+  cooldown, real failed writes, last-good preservation and recovery.
+- TypeScript tests **2 passed**; Ruff lint/format, TypeScript check, frontend lint,
+  local production build and Docker build passed. Local Node is 25.9.0; Docker/CI
+  use the pinned Node 24 runtime. Build warned about an unrelated parent-directory
+  lockfile; the Docker build context stays inside this repository.
+- Disposable resources use Compose project `gitpulse-release-20261102`, PostgreSQL
+  loopback port 55441, application port 3018, separate test/CLI/browser databases.
+  Fresh approved schema/seed startup produced 44 records and metrics **7h / 14d /
+  20 open issues / 15 window merges**. Image runtime readback: certifi 2026.10.23.
+  Local image config ID:
+  `sha256:361af791651cad45921bd4b0e7d9a8be84c9c472cb1a6d698b6333b859cf68c9`.
+  This local image is not a remotely published registry artifact.
+- The final image includes the Render Docker SSH prerequisite: non-root UID 10001,
+  `/home/gitpulse/.ssh` mode 0700 owned by gitpulse. A second isolated database
+  verified Node-only startup leaves **zero public tables**, returns health 503,
+  and performs no implicit initialization. Explicit approved migration/seed then
+  returned health 200, 44 rows and the expected metrics. Refresh returned 403 both
+  without credentials and with an unrelated Origin. An app restart preserved the
+  exact dataset identity, reference/load time, metrics, counts and single audit run.
+  Two read-only browser checks passed again against this final image.
+- Render Blueprint passed the current official JSON Schema. The checksum-verified
+  local Render CLI 2.34.0 could not run account-aware validation: `no workspace
+  specified and no default workspace set`. Account/workspace validation is pending.
+  Independent package review found two operational gaps; both were corrected and
+  the targeted rereview reported no remaining must-fix findings.
+- GitHub deployment records and the connected Vercel project list were empty.
+  No compatible existing host/account access was discovered. Proposed Render
+  configuration, costs, owner gates and operations are documented separately.
+  Candidate CI evidence is recorded below after publication.
+
+The historical records below retain their original dates and evidence scope.
 
 ## JARVIS–TMC theme update — October 16, 2026
 

@@ -17,6 +17,14 @@ Small explanatory/data labels are checked against a 7:1 contrast target.
 
 ![GitPulse dashboard with deterministic synthetic data](docs/dashboard.png)
 
+## Portfolio release
+
+The public HTTPS demo is **not deployed or publicly verified**. The November 2,
+2026 release candidate patches the Python certificate bundle and adds runtime
+auditing to CI. Deployment configuration and the operator handoff are in
+[production release](docs/production-release.md); approvals and account steps are
+in [owner actions](docs/owner-actions.md). Do not deploy the local Compose password.
+
 ## Run the demo
 
 Prerequisite: Docker Desktop with Compose. From a clean clone/project root:
@@ -212,9 +220,12 @@ Direct versions are pinned in `pyproject.toml`/`package.json`, with `uv.lock`, a
 Docker Python requirements export and `package-lock.json`. Python 3.12.13, httpx 0.28.1,
 asyncpg 0.31.0, Next.js 16.4.1, React 19.3.1, TypeScript 6.0.3, pg 8.23.1;
 Docker bases pin observed Node 24, Python 3.12 and PostgreSQL 18 image digests.
-ESLint 9.39.5 matches the current Next config plugin peer ranges; that ESLint line is
-deprecated upstream. Five dev-tool audit findings trace to an unpatched `braces`
-advisory. Production dependency audit: zero findings on October 15, 2026.
+Certifi is locked to 2026.10.23. Both the exported hashed Python runtime and npm
+production dependencies passed fresh audits on November 2, 2026. CI checks the
+runtime export against `uv.lock` and runs ephemeral pinned pip-audit 2.10.1.
+ESLint 9.39.5 matches the Next config plugin peer ranges and is deprecated upstream.
+The full npm audit reports 16 moderate development dependency entries from one
+minimatch advisory; see [security evidence and residual risk](docs/release-security.md).
 
 Official references checked October 15, 2026: [GitHub issues](https://docs.github.com/en/rest/issues/issues),
 [PR endpoints](https://docs.github.com/en/rest/pulls/pulls),

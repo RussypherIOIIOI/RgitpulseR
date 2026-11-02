@@ -38,6 +38,12 @@ jobs:
         with:
           version: '0.10.10'
           python-version: '3.12'
+      - name: Verify runtime lock export and audit dependencies
+        run: |
+          uv lock --check
+          uv export --frozen --no-dev --no-emit-project -o requirements.lock
+          git diff --exit-code -- requirements.lock
+          uvx --from pip-audit==2.10.1 pip-audit --requirement requirements.lock --require-hashes --progress-spinner off
       - name: Install locked dependencies
         run: |
           uv sync --frozen --extra dev

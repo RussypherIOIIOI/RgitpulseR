@@ -1,0 +1,50 @@
+# Candidate only: provisioning is a paid owner action. See docs/owner-actions.md.
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+previews:
+  generation: 'off'
+services:
+  - type: web
+    name: gitpulse-demo
+    runtime: docker
+    region: oregon
+    plan: 0.5c-512mb
+    numInstances: 1
+    autoDeployTrigger: 'off'
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # Deliberately bypass scripts/start-container.sh (which migrates and seeds).
+    dockerCommand: node node_modules/next/dist/bin/next start --hostname 0.0.0.0 --port 10000
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 30
+    # Owner removes this gate only after the separate migration/seed job succeeds.
+    maintenanceMode:
+      enabled: true
+    envVars:
+      - key: PORT
+        value: '10000'
+      - key: NODE_ENV
+        value: production
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=320
+      - key: NEXT_TELEMETRY_DISABLED
+        value: '1'
+      - key: GITPULSE_MODE
+        value: demo
+      - key: GITPULSE_REPO
+        value: example/observatory
+      - key: GITPULSE_REFRESH_ENABLED
+        value: 'false'
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gitpulse-demo-db
+          property: connectionString
+databases:
+  - name: gitpulse-demo-db
+    region: oregon
+    plan: 0.1c-256mb
+    postgresMajorVersion: '18'
+    databaseName: gitpulse_demo
+    user: gitpulse
+    diskSizeGB: 1
+    storageAutoscalingEnabled: false
+    ipAllowList: []
