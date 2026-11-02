@@ -47,7 +47,12 @@ below. Public deployment remains unverified; no production resources were create
 - GitHub deployment records and the connected Vercel project list were empty.
   No compatible existing host/account access was discovered. Proposed Render
   configuration, costs, owner gates and operations are documented separately.
-  Candidate CI evidence is recorded below after publication.
+  Patched application candidate `f8b3555c7beb9b03624c53cb75ec4c01854b8bc8`
+  [passed hosted CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41521390933)
+  including the new Python audit gate, 41 PostgreSQL/Python tests and all 3 browser
+  tests. [Release PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1) contains
+  the current candidate; its exact final head/CI are also recorded in the local
+  `artifacts/portfolio-release-receipt.md` after publication.
 
 The historical records below retain their original dates and evidence scope.
 

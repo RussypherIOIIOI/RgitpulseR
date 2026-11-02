@@ -31,14 +31,22 @@ Independent work: local JSON Schema validation and application checks can contin
 
 Prerequisites: step 1 approval, reviewed commit present on the connected Git remote,
 Git provider access restricted to this repository, and explicit owner approval to
-authorize the local CLI. The checksum-verified Render CLI v2.34.0 is already at
-`artifacts/render-cli/render.exe`; do not install another copy. Local schema
+authorize the local CLI. The current owner's checkout already contains the
+checksum-verified Render CLI v2.34.0 at `artifacts/render-cli/render.exe`. That file
+is ignored and is absent from clean clones. The tracked installer below downloads
+the pinned official Windows executable and verifies its published SHA256 without
+changing PATH or logging in. Local schema
 validation passed, but running this CLI's Blueprint validator returned exactly
 `no workspace specified and no default workspace set`. It has not validated the
-selected account/workspace. In an owner PowerShell terminal run:
+selected account/workspace. In an owner PowerShell 7 terminal run. The shown path
+is the current owner's actual checkout; on another machine, replace only that
+path with the actual cloned repository root before executing:
 
 ```powershell
 Set-Location -LiteralPath 'C:\Users\david\.vscode\[personal_projects]\.ppp-gitpulse'
+if (-not (Test-Path -LiteralPath '.\artifacts\render-cli\render.exe')) {
+    & '.\scripts\install-render-cli.ps1'
+}
 .\artifacts\render-cli\render.exe --version
 .\artifacts\render-cli\render.exe login
 # In the browser, verify the intended account and click Authorize CLI.

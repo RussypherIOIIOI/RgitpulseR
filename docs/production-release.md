@@ -93,8 +93,8 @@ retry. No network GitHub credentials are required. See [API/schema](api-and-sche
 | Evidence | Current value / required release value |
 | --- | --- |
 | Source inspected before edits | `1eee97dd6706db2c1dd8c493c011204aecb225ad` |
-| Final reviewed release commit | **TBD after all authorized work and checks** |
-| CI run for that exact commit | **TBD** |
+| Patched application candidate | `f8b3555c7beb9b03624c53cb75ec4c01854b8bc8`; later handoff-only corrections are on [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1) |
+| Verified application CI | [Run 41521390933](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41521390933); validate the PR's final head checks before approving that exact SHA |
 | Candidate hosted build/deploy ID | **TBD, no resource created** |
 | Hosted image digest, if exposed | **TBD; record build ID + exact source SHA if provider does not expose digest** |
 | Previous known-good deploy ID/source SHA | **TBD; first release has no previous deployed version** |
