@@ -174,7 +174,10 @@ No zone-wide API token, router forwarding or native cloudflared service is neede
 In [Cloudflare Dashboard](https://dash.cloudflare.com) choose **Networking > Tunnels > Create a tunnel**, select
 the cloudflared connector when prompted and name it **gitpulse-elmo**. Choose **Docker** for the connector.
 Its example command contains a token: do not execute it or save it to history,
-a file, screenshot or chat. Copy **only its token** into this hidden prompt:
+a file, screenshot or chat. Use its copy icon, then paste the whole copied Docker
+command (or just its token) into this hidden prompt. Both private entry points
+share a parser that extracts only a structurally valid token and never executes
+the pasted text:
 
 ```powershell
 & './scripts/prepare-selfhost-secrets.ps1' -TunnelTokenOnly

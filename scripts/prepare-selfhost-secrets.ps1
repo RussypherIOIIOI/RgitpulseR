@@ -15,7 +15,11 @@ $secretDirectory = [System.IO.Path]::GetFullPath($OutputDirectory)
 $databaseFiles = @('owner_password', 'reader_password', 'owner_database_url', 'reader_database_url')
 $targetFiles = if ($TunnelTokenOnly) { @('cloudflared_token') } else { $databaseFiles }
 foreach ($fileName in $targetFiles) {
-    if (Test-Path -LiteralPath (Join-Path $secretDirectory $fileName)) {
+    $targetPath = Join-Path $secretDirectory $fileName
+    if (Test-Path -LiteralPath $targetPath -PathType Container) {
+        throw 'Secret path is a directory. Keep the connector stopped and ask Codex to remove the empty placeholder.'
+    }
+    if (Test-Path -LiteralPath $targetPath -PathType Leaf) {
         throw 'Secret file already exists. Stop; rotation needs a separately reviewed procedure.'
     }
 }
@@ -38,7 +42,32 @@ foreach ($sid in @($currentSid, $systemSid)) {
     $acl.AddAccessRule([System.Security.AccessControl.FileSystemAccessRule]::new(
         $sid, 'FullControl', $inherit, $propagate, $allow))
 }
-Set-Acl -LiteralPath $secretDirectory -AclObject $acl
+if ($TunnelTokenOnly) {
+    # Existing credentials already have the approved ACL. Validate it instead of
+    # reapplying a descriptor (which can request unavailable Windows privileges).
+    $existingAcl = Get-Acl -LiteralPath $secretDirectory
+    $rules = @($existingAcl.GetAccessRules($true, $true, [Security.Principal.SecurityIdentifier]))
+    $expectedSids = @($currentSid.Value, $systemSid.Value)
+    if (-not $existingAcl.AreAccessRulesProtected -or $rules.Count -ne 2) {
+        throw 'Existing secret directory ACL requires owner review; no permissions changed.'
+    }
+    foreach ($sidValue in $expectedSids) {
+        if (@($rules | Where-Object { $_.IdentityReference.Value -eq $sidValue }).Count -ne 1) {
+            throw 'Existing secret directory ACL requires owner review; no permissions changed.'
+        }
+    }
+    foreach ($rule in $rules) {
+        if ($rule.IdentityReference.Value -notin $expectedSids -or
+            $rule.AccessControlType -ne $allow -or
+            $rule.FileSystemRights -ne [Security.AccessControl.FileSystemRights]::FullControl -or
+            $rule.InheritanceFlags -ne $inherit -or $rule.PropagationFlags -ne $propagate -or
+            $rule.IsInherited) {
+            throw 'Existing secret directory ACL requires owner review; no permissions changed.'
+        }
+    }
+} else {
+    Set-Acl -LiteralPath $secretDirectory -AclObject $acl
+}
 
 function Write-NewSecret([string]$Name, [string]$Value) {
     $stream = [System.IO.File]::Open((Join-Path $secretDirectory $Name),
@@ -51,15 +80,16 @@ function Write-NewSecret([string]$Name, [string]$Value) {
 }
 
 if ($TunnelTokenOnly) {
-    $secureToken = Read-Host 'Approved GitPulse Cloudflare tunnel token (hidden)' -AsSecureString
+    . (Join-Path $PSScriptRoot 'selfhost-token.ps1')
+    $secureToken = Read-Host 'Paste the copied Cloudflare Docker command OR token (hidden)' -AsSecureString
     try {
-        $tokenValue = [System.Net.NetworkCredential]::new('', $secureToken).Password.Trim()
-        if ($tokenValue.Length -lt 40 -or $tokenValue -match '\s') {
-            throw 'Invalid tunnel token shape. Nothing was written.'
-        }
+        $entryText = [System.Net.NetworkCredential]::new('', $secureToken).Password
+        $tokenValue = ConvertFrom-CloudflareTunnelEntry $entryText
         Write-NewSecret 'cloudflared_token' $tokenValue
+        Set-Clipboard -Value ''
     } finally {
-        Remove-Variable tokenValue, secureToken -ErrorAction SilentlyContinue
+        $secureToken.Dispose()
+        Remove-Variable entryText, tokenValue, secureToken -ErrorAction SilentlyContinue
     }
     Write-Output 'Tunnel token stored. No token value was printed.'
 } else {
