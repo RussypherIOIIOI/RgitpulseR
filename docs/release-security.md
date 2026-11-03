@@ -1,4 +1,4 @@
-# Release security evidence — November 2, 2026
+# Release security evidence — updated November 3, 2026
 
 These are dependency audit results, not a comprehensive security assessment.
 
@@ -38,8 +38,8 @@ They are omitted by `npm ci --omit=dev` in the runtime image.
 No blanket major-version override was applied: replacing old minimatch interfaces
 across ESLint/plugins would require compatibility work. The audit solver proposes
 obsolete ESLint 4.0.0 / eslint-config-next 0.2.4 downgrades. Those were rejected;
-neither `--force` nor advisory suppression was used. This residual is proposed
-for owner acceptance for this read-only demo; it has **not** been accepted yet.
+neither `--force` nor advisory suppression was used. The owner accepted this
+documented development-only residual in the November 3 ELMO launch approval.
 Do not lint attacker-supplied glob patterns. Revisit when upstream compatible
 patches are available; runtime findings continue to fail CI.
 
@@ -50,10 +50,14 @@ published database port. The web service receives only a limited reader DSN file
 explicit operations receive a separate owner DSN. The reader grant script refuses
 elevated roles, memberships, object ownership, CREATE, and effective write grants
 through PUBLIC or column privileges. Windows secret files are protected by ACLs,
-not claimed encrypted. Local role/restart/recovery contracts passed; public access
-and production credentials/SQL remain approval-gated. See [selfhost scope](selfhost.md).
+not claimed encrypted. Local role/restart/recovery contracts passed. Approved
+production credentials/SQL and public routing were applied; actual reader access,
+write rejection, public 403 refresh and restart persistence were verified.
+See [live evidence](live-release.md) and [selfhost scope](selfhost.md).
 
 Web refresh stays disabled, synthetic data needs no GitHub token, and production
-startup must not run automatic schema/seed operations. Production account access,
-cost approval, exact deployment approval and migration/seed approval remain
-separate gates. No public deployment or production database has been created.
+startup does not run automatic schema/seed operations. The approved dedicated
+production database and public deployment now exist. No GitHub token, live
+ingestion or scheduler is enabled. Reboots, off-host/fresh-cluster recovery and
+production rollback remain unverified; dependency audits are not comprehensive
+security or availability certification.

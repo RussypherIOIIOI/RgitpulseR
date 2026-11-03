@@ -15,20 +15,25 @@ pair IRIS and green accents together. Both charts have VOID plot backgrounds: IR
 merge bars carry green edges, while green issue-age bars carry IRIS end caps.
 Small explanatory/data labels are checked against a 7:1 contrast target.
 
-![GitPulse dashboard with deterministic synthetic data](docs/dashboard.png)
+![Live GitPulse dashboard with deterministic synthetic data](docs/public-dashboard.png)
 
 ## Portfolio release
 
-The public HTTPS demo is **not deployed or publicly verified**. The selected target
-is existing ELMO hardware at **https://gitpulse.tmcsolutions-org.net**, using a
-Cloudflare tunnel and **$0 additional platform subscription**. Existing domain,
-hardware, electricity and internet costs remain. The active candidate has a private
-dedicated PG18 container, separately approved SQL/seed operations, and a Node-only
-app with reader credentials. Use [the self-host runbook](docs/selfhost.md),
-[release scope](docs/production-release.md) and [owner actions](docs/owner-actions.md).
-Final exact source/image and production/tunnel/DNS approvals remain pending. The
-earlier paid Render proposal is historical and unapproved. Root Compose below is
-the local demo; its public placeholder password must not be deployed.
+The read-only synthetic demo is **live at [gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/)**,
+verified November 3, 2026 through public HTTPS, desktop/mobile browser tests and an
+external page fetch. Existing ELMO hardware runs a private PostgreSQL 18 container
+and a reader-only Node app behind Cloudflare Tunnel, with **$0 additional platform
+subscription**. Existing domain, hardware, electricity and internet costs remain.
+
+See the [live release evidence and operations](docs/live-release.md),
+[self-host runbook](docs/selfhost.md), [release scope](docs/production-release.md)
+and [owner actions](docs/owner-actions.md). Availability depends on ELMO, Docker,
+power and internet; unattended reboot recovery and off-host disaster recovery
+remain unverified. [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1)
+holds the release changes and remains open; the running image source is recorded
+separately from repository/operator-document commits. The paid Render proposal is
+historical and inactive. Root Compose below is the local demo; its public
+placeholder password must not be deployed.
 
 ## Run the demo
 

@@ -1,13 +1,17 @@
 # Owner actions: ELMO public DEMO
 
-Prepared 2026-11-02. The owner selected existing ELMO hardware and
+Updated 2026-11-03. **Deployment and public launch complete:**
+[live demo](https://gitpulse.tmcsolutions-org.net/) and [verified receipt](live-release.md).
+The owner approved existing ELMO hardware and
 `gitpulse.tmcsolutions-org.net`. The active candidate requires **$0 additional
 platform subscription**; existing domain, hardware, electricity and internet costs
-remain. Hostname selection does not authorize production SQL, startup, tunnel or
-DNS mutation. Final exact source/image approval remains pending.
+remain. Cards 1–5 below were approved and completed for this release. They are
+retained as redeployment reference, not tasks to repeat on the existing volume.
+No further token entry is needed.
 
 The complete commands, dependencies, expected results, failure stops and nonsecret
-receipts are in [the self-host runbook](selfhost.md). Execute cards in order:
+receipts are in [the self-host runbook](selfhost.md). Future redeployments follow
+the cards in order; current status and limits are in the live receipt:
 
 | Card | Owner action and approval boundary | Blocks |
 | --- | --- | --- |
@@ -19,10 +23,12 @@ receipts are in [the self-host runbook](selfhost.md). Execute cards in order:
 | 6 | Approve Docker sign-in startup and Windows power settings; verify reboot/login dependency | Operational acceptance |
 | 7 | Approve isolated restore rehearsal; retain protected backups and recovery/rollback evidence | Recovery acceptance |
 
-Owner access is needed because these pending actions create credentials and
-persistent data, execute SQL, publish an endpoint or change host settings. These
-gates follow the requested deployment scope and owner-controlled external actions.
-Source review, isolated tests, documentation and CI can continue while pending.
+Remaining owner decisions concern host startup/reboot verification, protected
+off-host backup and fresh-cluster recovery. These were excluded from this launch;
+no recurring jobs or host settings were changed. Card 7's local baseline backup
+exists and isolated test recovery passed; production recovery remains unverified.
+Main merge also remains outside the approved scope. No action is required to view
+the public demo. Use the live receipt's health/recovery commands after host changes.
 
 Return only source/image IDs, CI links, container/volume names, tunnel ID, hostname,
 status codes, metric/count comparisons, backup hash/time and durations. Never

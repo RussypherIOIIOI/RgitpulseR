@@ -1,21 +1,25 @@
 # ELMO self-host runbook
 
-Prepared 2026-11-02. Target: existing ELMO, read-only synthetic DEMO at
+Updated 2026-11-03. Target: existing ELMO, read-only synthetic DEMO at
 `https://gitpulse.tmcsolutions-org.net`, named Cloudflare tunnel `gitpulse-elmo`.
-The selected URL is **not a deployed result**. Additional platform subscription:
+The URL is **live and publicly verified**; see [the release receipt](live-release.md).
+Additional platform subscription:
 **$0**; existing hardware, electricity, internet and domain costs remain. Owner:
 Russ Meredith.
 
-These are production owner-action cards. Source review/isolated tests can continue
-while approval is pending. Selecting the hostname did not approve production SQL,
-startup, DNS or tunnel mutation. Return no credentials, tokens or DSNs.
+These cards remain a reference for future redeployment/recovery. The owner approved
+the current ELMO deployment and public launch; cards 1–5 are complete for this
+release. Do not rerun initialization or regenerate credentials on the existing
+volume. Host settings/reboot and fresh-cluster production recovery were excluded
+and require their own approved scope. Return no credentials, tokens or DSNs.
 
 ## 1. Approve the exact release
 
 **Why owner needed:** new secrets, persistent data, SQL, host resources and public
 exposure. **Dependencies:** final reviewed [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1)
 head and green required CI checks for that exact SHA; inspect Compose, migration 001,
-reader-role SQL and secret generator. Final approved SHA/image are pending.
+reader-role SQL and secret generator. The current approved SHA/image are recorded
+in [the live receipt](live-release.md); a future release needs its own exact receipt.
 
 Before cards 2–4 approve: ELMO only; project `gitpulse-public`; new dedicated PG18
 container/`gitpulse-public_postgres_data` volume; four ignored ACL-protected files

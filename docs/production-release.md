@@ -1,10 +1,13 @@
-# Public DEMO release candidate: ELMO
+# Public DEMO release: ELMO
 
-Prepared 2026-11-02. **Public deployment remains unverified.** The owner selected
-existing ELMO hardware and `https://gitpulse.tmcsolutions-org.net`; this does not
-establish a working URL or approve DNS/tunnel mutation. Final exact source/image
-approval and [owner-run cards](selfhost.md) remain required. [Owner actions](owner-actions.md)
-is the short approval index.
+Updated 2026-11-03. **Approved and publicly verified:**
+[gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/).
+The owner explicitly approved ELMO deployment and public launch, including the
+dedicated database, credentials, additive SQL, synthetic seed and exact tunnel
+route. See [the dated live receipt](live-release.md) for source/image provenance,
+executed checks and operational limits. [Owner-run cards](selfhost.md) remain the
+recovery/redeployment reference; [owner actions](owner-actions.md) separates
+completed deployment from optional, still unapproved host/recovery changes.
 
 The active implementation is [`deploy/selfhost.compose.yaml`](../deploy/selfhost.compose.yaml),
 with a nonsecret [env template](../deploy/selfhost.env.example), explicit
@@ -70,21 +73,20 @@ reference `2026-10-12T12:00:00Z`. No real GitHub data is approved.
 
 | Item | Current state / required receipt |
 | --- | --- |
-| Source reviewed before release | `1eee97dd6706db2c1dd8c493c011204aecb225ad` |
-| Current review | [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1); resolve final head/checks before approval |
-| Final approved deployment SHA | **Pending final commit and approval; do not substitute older candidate SHA** |
-| CI for exact final SHA | **Pending**; [verification record](verification.md) separates observed earlier results |
-| Image tag/config ID | **Pending final build**; record `gitpulse:selfhost-<12-character SHA>`, full image ID and source label |
+| Approved running application source | `dca6823f4567c0a5caa1c286e5d20f5ed409ace0` |
+| Current review | [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1), open; main merge was excluded |
+| Operator helper source | `510535304dfb671b5c30a5465107bdd06034b5b0`; token parser and ACL checks, no app changes |
+| Exact helper-source CI | [Push](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687858818) and [PR](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687866846) succeeded |
+| Actual running local image ID | `sha256:cf9f02b20d806d0013f9bb1dd2cebef72aa679a6de0efb4750e5b918b23393a6`; approved-source filesystem comparison in [receipt](live-release.md) |
 | Registry digest | **Not claimed**; local config ID is not a registry manifest digest |
-| ELMO container/volume and SQL/seed | **Pending owner-approved execution** |
-| Tunnel ID and exact route | **Pending owner-approved Cloudflare action** |
-| Public HTTPS/health/UI/read-only/privacy | **Unverified publicly** |
-| Restart/reboot, backup/restore, rollback | **Pending operational checks** |
+| ELMO container/volume and SQL/seed | Running; 44 synthetic rows, dedicated volume, reader-only app |
+| Tunnel ID and exact route | `d2100870-8492-4f08-b99c-c6cdb0c6aa37`; approved hostname to `http://app:3000`, four ready connections |
+| Public HTTPS/health/UI/read-only/privacy | HTTP 200 root/health; same/foreign-origin refresh 403; two read-only browser tests and external page fetch passed |
+| Restart/reboot, backup/restore, rollback | App restart preserved snapshot; protected local dump exists; isolated same-cluster recovery passed. Host reboot, off-host/fresh-cluster recovery and production rollback remain unverified |
 
-Earlier local/CI successes do not verify this final candidate or its public endpoint.
-Use the final source/image receipt, reader checks, public browser checks and recovery
-evidence before calling the release complete. Failure-injection browser tests run
-only against isolated CI/test resources, never the public DEMO.
+Public deployment evidence is recorded separately from local/CI results in the
+[live receipt](live-release.md). Failure-injection browser tests run only against
+isolated CI/test resources, never the public DEMO.
 
 The previous paid Render architecture, prices, login/provisioning instructions and
 `deploy/render.yaml` are **historical, unapproved proposal artifacts**, superseded

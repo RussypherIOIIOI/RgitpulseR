@@ -1,6 +1,36 @@
 # Verification record
 
-## Active ELMO selfhost candidate — November 2, 2026
+## Public ELMO release — November 3, 2026
+
+The approved deployment is live at [gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/).
+This dated update supersedes the pending deployment/DNS statements in the
+historical sections below. [Full live receipt and limitations](live-release.md).
+
+- Public root and health returned 200 with normal TLS validation; same/foreign
+  Origin POST refresh returned 403. An external Exa fetch retrieved the public
+  dashboard and expected synthetic metrics.
+- Public read-only browser checks: **2 passed, 1 deselected** in 10.75 seconds;
+  failure-injection/manual-refresh test excluded from production. Fonts, paired
+  IRIS/green charts, VOID plots, computed contrast, keyboard operation, mobile
+  overflow, search and pagination passed. [Desktop capture](public-dashboard.png).
+- App-only restart preserved run `b7ae66db-c787-4ce6-aade-47d0c7816fe5`, load
+  `2026-11-03T17:27:00.498459+00:00`, two import runs, 44 rows and exact metrics
+  **7h / 14d / 20 / 15**. No seed/import was invoked by the restart verification.
+- Actual reader connection, denied writes, private database/no host port and
+  loopback app binding were verified on ELMO. Connector readiness returned 200
+  with four connections. No native PostgreSQL/JARVIS settings were changed.
+- Exact operator-source `510535304dfb671b5c30a5465107bdd06034b5b0` passed
+  [push CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687858818)
+  and [PR CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687866846):
+  50 Python/PostgreSQL tests, three isolated browser tests, two TypeScript tests,
+  lint/type/build, zero Python/npm runtime audit findings and disposable selfhost
+  isolation/restart/recovery contract. Running app source remains approved dca6823;
+  later helper/document changes do not imply the running image was rebuilt.
+- A protected on-ELMO baseline dump exists. No host reboot, pre-login Docker
+  recovery, off-host backup, fresh-cluster recovery or production rollback was
+  executed. No automatic monitoring/backup task was installed. Main merge excluded.
+
+## Historical ELMO selfhost candidate — November 2, 2026
 
 The owner declined additional hosting subscriptions, confirmed always-on hardware,
 and selected `gitpulse.tmcsolutions-org.net`. The active candidate is now
