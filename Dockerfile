@@ -32,6 +32,7 @@ COPY next.config.mjs ./next.config.mjs
 COPY app/fonts/OFL.txt app/fonts/FONTLOG.txt ./licenses/MatrixSans/
 COPY migrations ./migrations
 COPY scripts/start-container.sh ./scripts/start-container.sh
+COPY scripts/start-selfhost.sh ./scripts/start-selfhost.sh
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PATH="/opt/venv/bin:$PATH"
 USER gitpulse
 EXPOSE 3000

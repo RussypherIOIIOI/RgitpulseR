@@ -60,6 +60,8 @@ jobs:
           uv run pytest -m 'not browser' -q
           uv run ruff check src tests
           uv run ruff format --check src tests
+          uv run ruff check scripts/verify-selfhost.py
+          uv run ruff format --check scripts/verify-selfhost.py
       - name: TypeScript, lint and production build
         run: |
           npm test
@@ -77,3 +79,12 @@ jobs:
             sleep 1
           done
           uv run pytest tests/test_browser.py -q
+  selfhost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Build the selfhost runtime
+        run: docker build -t gitpulse:selfhost-ci .
+      - name: Verify private read-only deployment and recovery
+        run: python3 scripts/verify-selfhost.py --image gitpulse:selfhost-ci

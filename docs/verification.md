@@ -1,5 +1,49 @@
 # Verification record
 
+## Active ELMO selfhost candidate — November 2, 2026
+
+The owner declined additional hosting subscriptions, confirmed always-on hardware,
+and selected `gitpulse.tmcsolutions-org.net`. The active candidate is now
+`deploy/selfhost.compose.yaml`; the earlier paid Render package below is historical,
+unapproved and superseded. **No production database, public tunnel or DNS route has
+been created.** The selected hostname currently returns DNS name does not exist.
+
+Observed local verification of the actual selfhost package:
+
+- Built the Node/Python image including `start-selfhost.sh`. Pulled pinned
+  cloudflared 2026.10.7 and verified its version and `--token-file` support without
+  network access from the version/help containers.
+- `python scripts/verify-selfhost.py --image gitpulse:selfhost-verify` passed against
+  a uniquely named disposable Docker project: private PG18 without host ports,
+  loopback-only app, missing-secret rejection, zero implicit schema writes before
+  explicit migration/seed, exact **44 / 7h / 14d / 20 / 15** fixture results,
+  reader SELECT access with persistent write/CREATE rejection, 403 refresh with
+  same/foreign Origin, identical restart snapshot and same-cluster backup/restore.
+- Reader-role SQL repeated safely and rejected four independently induced unsafe
+  cases: owned table, schema CREATE, PUBLIC UPDATE, and column-level UPDATE. These
+  mutations were isolated test fixtures and were removed. No public tunnel started.
+  The script removed only its own disposable containers/network/volume.
+- Windows PowerShell secret generation produced current-user/SYSTEM-only protected
+  directory ACLs, distinct random credentials, ignored file paths and refusal to
+  overwrite. A non-root container read the ACL-protected DSN mount without printing
+  its value. No production credential files or actual tunnel token were created.
+- Compose validation, PowerShell parsing, Ruff lint/format and diff checks passed.
+  Independent review's reader-ownership/CREATE finding was corrected; final source
+  and operator-document review reported no remaining must-fix findings.
+
+CI adds a separate `selfhost` job that builds the image and executes the same
+disposable runtime/recovery contract, alongside the existing 41 PostgreSQL/Python,
+3 browser and 2 TypeScript checks and runtime audit gates. Final exact-source CI and
+image provenance are recorded in the ignored `artifacts/elmo-release-approval.md`
+after publication; [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1) is the
+authoritative candidate head/checks view. Earlier green CI does not prove this new
+job until it actually passes.
+
+Public HTTPS/UI, actual Cloudflare account/route, production SQL/seed, host reboot
+and pre-login Docker recovery, fresh-cluster restoration and operational availability
+remain unverified. [Owner cards](selfhost.md) distinguish each pending gate. Existing
+ELMO power/internet/domain costs remain; the proposal adds no platform subscription.
+
 ## Release hardening — November 2, 2026
 
 This section supersedes the historical dependency/CI/production-browser caveats

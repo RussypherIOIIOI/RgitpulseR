@@ -1,0 +1,139 @@
+name: gitpulse-selfhost
+
+x-logging: &bounded-logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '3'
+
+services:
+  db:
+    # Preserve the existing tested PostgreSQL 18 image; no database upgrade.
+    image: postgres:18@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gitpulse_owner
+      POSTGRES_DB: gitpulse_demo
+      POSTGRES_PASSWORD_FILE: /run/secrets/owner_password
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    secrets:
+      - owner_password
+      - reader_password
+    volumes:
+      # PostgreSQL 18 image data directory is beneath /var/lib/postgresql.
+      - postgres_data:/var/lib/postgresql
+      - ./selfhost-reader.sql:/opt/gitpulse/selfhost-reader.sql:ro
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U gitpulse_owner -d gitpulse_demo']
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    logging: *bounded-logging
+
+  app:
+    image: ${GITPULSE_IMAGE:?Set GITPULSE_IMAGE to the reviewed immutable release image}
+    restart: unless-stopped
+    init: true
+    entrypoint: [sh, scripts/start-selfhost.sh]
+    command: [node, node_modules/next/dist/bin/next, start, --hostname, 0.0.0.0, --port, '3000']
+    environment:
+      DATABASE_URL_FILE: /run/secrets/reader_database_url
+      NODE_ENV: production
+      NODE_OPTIONS: --max-old-space-size=320
+      NEXT_TELEMETRY_DISABLED: '1'
+      GITPULSE_MODE: demo
+      GITPULSE_REPO: example/observatory
+      GITPULSE_REFRESH_ENABLED: 'false'
+      GITPULSE_ORIGIN: ${GITPULSE_ORIGIN:-https://gitpulse.tmcsolutions-org.net}
+    secrets: [reader_database_url]
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '127.0.0.1:${GITPULSE_WEB_PORT:-3017}:3000'
+    networks: [backend, frontend]
+    read_only: true
+    tmpfs: ['/tmp:size=32m', '/app/.next/cache:size=32m,uid=10001,gid=10001']
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    logging: *bounded-logging
+
+  # Explicit owner-approved one-shot migration/import only. Never part of normal up.
+  bootstrap:
+    profiles: [operations]
+    image: ${GITPULSE_IMAGE:?Set GITPULSE_IMAGE to the reviewed immutable release image}
+    restart: 'no'
+    entrypoint: [sh, scripts/start-selfhost.sh]
+    command: [python, -m, gitpulse.cli, migrate]
+    environment:
+      DATABASE_URL_FILE: /run/secrets/owner_database_url
+      GITPULSE_MODE: demo
+      GITPULSE_REPO: example/observatory
+    secrets: [owner_database_url]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [backend]
+    read_only: true
+    tmpfs: [/tmp:size=32m]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    logging: *bounded-logging
+
+  tunnel:
+    profiles: [public]
+    # Latest official release and multiarchitecture manifest, verified 2026-11-02.
+    image: cloudflare/cloudflared:2026.10.7@sha256:4955524aeaa379e154023d5a027c250f7b35041a2e7e950cf13f144bc9b9c5ba
+    restart: unless-stopped
+    command: [tunnel, --no-autoupdate, --metrics, '0.0.0.0:2000', run, --token-file, /run/secrets/cloudflared_token]
+    secrets: [cloudflared_token]
+    depends_on:
+      app:
+        condition: service_healthy
+    # Provider route must be exact hostname -> http://app:3000; no host ports.
+    networks: [frontend]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 64
+    logging: *bounded-logging
+
+networks:
+  backend:
+    internal: true
+  frontend: {}
+
+volumes:
+  postgres_data: {}
+
+# Compose file secrets are host bind files, not encrypted-at-rest storage.
+secrets:
+  owner_password:
+    file: ${GITPULSE_SECRETS_DIR:-../artifacts/selfhost-secrets}/owner_password
+  reader_password:
+    file: ${GITPULSE_SECRETS_DIR:-../artifacts/selfhost-secrets}/reader_password
+  owner_database_url:
+    file: ${GITPULSE_SECRETS_DIR:-../artifacts/selfhost-secrets}/owner_database_url
+  reader_database_url:
+    file: ${GITPULSE_SECRETS_DIR:-../artifacts/selfhost-secrets}/reader_database_url
+  cloudflared_token:
+    file: ${GITPULSE_SECRETS_DIR:-../artifacts/selfhost-secrets}/cloudflared_token

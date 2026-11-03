@@ -45,6 +45,14 @@ patches are available; runtime findings continue to fail CI.
 
 ## Deployment boundaries
 
+The active ELMO candidate uses a dedicated private PostgreSQL 18 container with no
+published database port. The web service receives only a limited reader DSN file;
+explicit operations receive a separate owner DSN. The reader grant script refuses
+elevated roles, memberships, object ownership, CREATE, and effective write grants
+through PUBLIC or column privileges. Windows secret files are protected by ACLs,
+not claimed encrypted. Local role/restart/recovery contracts passed; public access
+and production credentials/SQL remain approval-gated. See [selfhost scope](selfhost.md).
+
 Web refresh stays disabled, synthetic data needs no GitHub token, and production
 startup must not run automatic schema/seed operations. Production account access,
 cost approval, exact deployment approval and migration/seed approval remain

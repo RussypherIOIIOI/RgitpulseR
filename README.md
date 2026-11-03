@@ -19,11 +19,16 @@ Small explanatory/data labels are checked against a 7:1 contrast target.
 
 ## Portfolio release
 
-The public HTTPS demo is **not deployed or publicly verified**. The November 2,
-2026 release candidate patches the Python certificate bundle and adds runtime
-auditing to CI. Deployment configuration and the operator handoff are in
-[production release](docs/production-release.md); approvals and account steps are
-in [owner actions](docs/owner-actions.md). Do not deploy the local Compose password.
+The public HTTPS demo is **not deployed or publicly verified**. The selected target
+is existing ELMO hardware at **https://gitpulse.tmcsolutions-org.net**, using a
+Cloudflare tunnel and **$0 additional platform subscription**. Existing domain,
+hardware, electricity and internet costs remain. The active candidate has a private
+dedicated PG18 container, separately approved SQL/seed operations, and a Node-only
+app with reader credentials. Use [the self-host runbook](docs/selfhost.md),
+[release scope](docs/production-release.md) and [owner actions](docs/owner-actions.md).
+Final exact source/image and production/tunnel/DNS approvals remain pending. The
+earlier paid Render proposal is historical and unapproved. Root Compose below is
+the local demo; its public placeholder password must not be deployed.
 
 ## Run the demo
 

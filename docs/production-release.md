@@ -1,129 +1,99 @@
-# Production DEMO release candidate
+# Public DEMO release candidate: ELMO
 
-Prepared 2026-11-02. **Deployment has not occurred.** No host, workspace, billing
-approval, production database, image digest, domain or production URL is established.
-The inspected Vercel project list was empty and GitHub deployments returned `[]`;
-neither observation proves that no independently managed hosting exists.
+Prepared 2026-11-02. **Public deployment remains unverified.** The owner selected
+existing ELMO hardware and `https://gitpulse.tmcsolutions-org.net`; this does not
+establish a working URL or approve DNS/tunnel mutation. Final exact source/image
+approval and [owner-run cards](selfhost.md) remain required. [Owner actions](owner-actions.md)
+is the short approval index.
 
-The candidate is a public, read-only synthetic portfolio DEMO: no user accounts,
-real repository ingestion, GitHub token, web refresh, cron or background importer.
-The bundled `example/observatory` fixture is synthetic. Keep DEMO labels and fixture
-provenance visible. The established Matrix Sans font and paired IRIS `#7F00FF` /
-NVIDIA GREEN `#76B900` design remain application requirements.
+The active implementation is [`deploy/selfhost.compose.yaml`](../deploy/selfhost.compose.yaml),
+with a nonsecret [env template](../deploy/selfhost.env.example), explicit
+[reader-role SQL](../deploy/selfhost-reader.sql), a
+[service-specific secret loader](../scripts/start-selfhost.sh), and
+[Windows credential preparation](../scripts/prepare-selfhost-secrets.ps1).
 
-## Chosen candidate architecture (awaiting owner selection)
+## Scope and architecture
 
-One paid Render Docker web service and one paid PostgreSQL 18 database in Oregon.
-This fits the existing Node 24 / Python 3.12 image without splitting the application.
-Render manages HTTPS; its private network connects the services. PostgreSQL owns
-persistent data; the web filesystem is disposable. No web disk is needed.
+Only bundled synthetic `example/observatory` data is published. No GitHub token,
+live ingestion, visitor accounts, web refresh, scheduler or new paid subscription
+is included. Retain DEMO provenance, Matrix Sans, IRIS `#7F00FF` and NVIDIA GREEN
+`#76B900`.
 
-[`deploy/render.yaml`](../deploy/render.yaml) is the actual candidate Blueprint.
-It starts **only Node**, overrides the Dockerfile's automatic migrate/seed CMD,
-disables auto deploys/previews, and initially enables maintenance mode. It contains
-no pre-deploy or initial-deploy SQL hook. Creating the Blueprint still provisions
-paid resources and attempts the initial deploy; `autoDeployTrigger: off` does not
-prevent that first attempt. Only apply it after the owner gate in owner-actions.
+A dedicated PostgreSQL 18 container owns a new named Docker volume on a private
+backend network. It publishes **no database port** and does not use or modify
+ELMO's native PostgreSQL/JARVIS services. The app publishes only `127.0.0.1:3017`,
+starts Node without automatic migration/import, and receives only a reader DSN
+file. The `operations` profile provides explicit one-shot owner CLI jobs with a
+separate owner DSN. The `public` profile connector joins the frontend network;
+Cloudflare tunnel `gitpulse-elmo` routes only the approved HTTPS hostname to
+`http://app:3000`. No router forwarding or public PG listener is needed.
 
-Initial health can fail on an empty database. After a successful image build,
-an explicitly approved one-off job performs migration and synthetic seeding using
-that build. Render documents jobs using the latest successful **build** artifact;
-first-deploy bootstrap on this account remains unverified. If Render refuses the
-job, stop and retain maintenance mode; do not add an automatic migration hook.
+New random credentials reside in ignored ACL-protected host files, mounted as
+service-scoped Compose secrets. File mounts are not an encryption-at-rest guarantee.
+Tunnel-token entry is a separate hidden prompt after approval, never a command
+argument. Reader grants allow SELECT on the three tables and EXECUTE on the
+existing dashboard function; smoke checks must confirm no reader write privileges.
 
-## Bounds and security
+App/database limits are each 1 CPU / 512 MB; tunnel is 0.5 CPU / 256 MB. Node
+old-space is 320 MB; existing pool size four, connection timeout five seconds and
+statement timeout ten seconds remain. Logs rotate at three 10 MB files per service.
+These are configured bounds, not measured capacity or an SLA. Host/VM disk growth
+is owner-managed; there is no storage autoscale or automatic plan increase.
 
-Web: one instance, 0.5 CPU, 512 MB RAM, V8 old-space bound 320 MB (other process
-memory also counts). PostgreSQL: 0.1 CPU, 256 MB RAM, 1 GB disk, no storage autoscale.
-The existing Node pool caps at four connections with 5-second connection and
-10-second statement timeouts. CLI jobs have the existing 150-second deadline.
-These are proposed resource bounds, not measured hosted capacity or an SLA.
-Monitor memory/restarts, disk, connection count, health and latency after deployment.
-No silent plan increase is authorized if these bounds prove insufficient.
+Additional platform subscription: **$0** using existing Docker/Cloudflare access,
+hardware and domain. Existing power/internet/domain costs remain. Confirm account
+permissions, applicable product terms and no-cost availability; stop if a paid
+product is proposed. Docker Desktop sign-in, Windows sleep/reboots, power and home
+internet affect availability. Unattended pre-login recovery is not established.
 
-`DATABASE_URL` is injected from the database; never print or paste it into chat.
-The database external IP allow list is empty. Confirm this in the provider console.
-Do not add `GITHUB_TOKEN`, `GITPULSE_REFRESH_TOKEN` or any `NEXT_PUBLIC_*` secret.
-`GITPULSE_REFRESH_ENABLED=false` enforces visitor read-only behavior and must remain
-false. The provider-created database role also supports the approved CLI writes;
-this configuration does **not** claim a SELECT-only database role. A dedicated
-reader role would require a separately reviewed privilege change, outside this
-no-new-SQL release. Restrict provider account access, enable MFA, and keep the API
-key used for the one-off job in the owner's terminal only; revoke it afterward.
+## Exact SQL and data boundary
 
-## Cost proposal, not approval
+Existing [`migrations/001_initial.sql`](../migrations/001_initial.sql) creates
+`import_runs`, `repositories`, `work_items`, indexes `work_items_published` and
+`import_runs_started`, constraints, and stable SQL function
+`gitpulse_dashboard(text,text,text,integer,text)`. The CLI applies it under a
+transactional advisory lock. Existing-schema detection is not a full schema diff;
+unexpected schemas require investigation.
 
-Official Render sources checked 2026-11-02 list $7/month for the 512 MB web service,
-$6/month for the 256 MB paid database and $0.30/GB/month database storage. Proposed
-steady base: **$13.30/month USD** on a $0 Hobby workspace with 1 GB database storage.
-Taxes, bandwidth/build overages, brief one-off jobs, recovery databases and optional
-domains are additional. Request an owner-selected **$20/month operating ceiling**;
-this is a human approval threshold, not a provider-enforced hard spending cap.
-Before provisioning confirm the console quote and workspace suitability for the
-LLC's intended usage. If a paid workspace is needed, re-price and obtain approval.
-An unapproved or exceeded quote blocks provisioning; do not substitute Free PG.
+New [`selfhost-reader.sql`](../deploy/selfhost-reader.sql) creates the login
+`gitpulse_reader` if absent, refuses elevated privileges/memberships, and grants
+CONNECT, schema USAGE, SELECT and dashboard EXECUTE. It does not rotate existing
+credentials. The app never receives the owner DSN. Review both SQL files before
+execution; this is additional explicit privilege SQL beyond migration 001.
 
-Pricing evidence: [official pricing](https://render.com/pricing),
-[official cost breakdown](https://render.com/articles/how-much-does-cloud-application-hosting-cost-for-small-businesses),
-[official service price comparison](https://render.com/articles/render-vs-netlify).
-The pricing page body did not render its complete price tables in the text browser;
-indexed official pricing supplied the $6 database rate. Console confirmation is
-still mandatory before spending.
+An explicitly invoked DEMO import publishes 44 synthetic work items and the
+successful dataset pointer transactionally. Expected metrics: **7 hours median
+merge time, 14 days median issue age, 20 open issues, 15 merged PRs in the window**,
+reference `2026-10-12T12:00:00Z`. No real GitHub data is approved.
 
-## Exact migration and publication scope
+## Release evidence
 
-Only existing [`migrations/001_initial.sql`](../migrations/001_initial.sql) is used.
-It creates `import_runs`, `repositories`, `work_items`; indexes
-`work_items_published` and `import_runs_started`; and stable SQL function
-`gitpulse_dashboard(text,text,text,integer,text)` (default arguments permit `()`).
-Primary/unique/check constraints and FKs are defined in that file. There are no
-new SQL files, destructive migrations or schema changes in this package.
-The CLI applies migration transactionally under a migration advisory lock. Its
-existing-schema detection is limited; inspect the dedicated target and do not
-treat a no-op as a comprehensive schema diff. Partial/unrelated schemas require
-investigation, never manual table deletion to force the CLI through.
-
-`python -m gitpulse.cli import` in DEMO mode reads the packaged fixture and publishes
-the business writes and dataset pointer in one transaction. A failed import must
-leave the previous successful snapshot; check job failure before attempting any
-retry. No network GitHub credentials are required. See [API/schema](api-and-schema.md).
-
-## Provenance and evidence to fill at release
-
-| Evidence | Current value / required release value |
+| Item | Current state / required receipt |
 | --- | --- |
-| Source inspected before edits | `1eee97dd6706db2c1dd8c493c011204aecb225ad` |
-| Patched application candidate | `f8b3555c7beb9b03624c53cb75ec4c01854b8bc8`; later handoff-only corrections are on [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1) |
-| Verified application CI | [Run 41521390933](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41521390933); validate the PR's final head checks before approving that exact SHA |
-| Candidate hosted build/deploy ID | **TBD, no resource created** |
-| Hosted image digest, if exposed | **TBD; record build ID + exact source SHA if provider does not expose digest** |
-| Previous known-good deploy ID/source SHA | **TBD; first release has no previous deployed version** |
-| Migration/seed job ID and exit status | **TBD** |
-| HTTPS URL, health/UI/refresh checks | **TBD** |
-| Backup and isolated recovery rehearsal | **TBD** |
+| Source reviewed before release | `1eee97dd6706db2c1dd8c493c011204aecb225ad` |
+| Current review | [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1); resolve final head/checks before approval |
+| Final approved deployment SHA | **Pending final commit and approval; do not substitute older candidate SHA** |
+| CI for exact final SHA | **Pending**; [verification record](verification.md) separates observed earlier results |
+| Image tag/config ID | **Pending final build**; record `gitpulse:selfhost-<12-character SHA>`, full image ID and source label |
+| Registry digest | **Not claimed**; local config ID is not a registry manifest digest |
+| ELMO container/volume and SQL/seed | **Pending owner-approved execution** |
+| Tunnel ID and exact route | **Pending owner-approved Cloudflare action** |
+| Public HTTPS/health/UI/read-only/privacy | **Unverified publicly** |
+| Restart/reboot, backup/restore, rollback | **Pending operational checks** |
 
-Local preparation observed: checksum-verified Render CLI v2.34.0 is available at
-`artifacts/render-cli/render.exe`. Official Render JSON Schema validation passed.
-The actual CLI validation stopped with `no workspace specified and no default
-workspace set`; owner login, CLI authorization and workspace selection are required
-before account-aware validation. These observations establish no hosted readiness.
+Earlier local/CI successes do not verify this final candidate or its public endpoint.
+Use the final source/image receipt, reader checks, public browser checks and recovery
+evidence before calling the release complete. Failure-injection browser tests run
+only against isolated CI/test resources, never the public DEMO.
 
-Never replace these with guessed IDs or URLs. Source build provenance does not
-prove a registry digest. Run the exact-commit validation and operator steps in
-[owner-actions.md](owner-actions.md). Production acceptance requires observed
-health 200, correct synthetic UI after reload, refresh 403, HTTPS, database privacy,
-and recorded rollback/recovery evidence. Local or schema validation is insufficient.
+The previous paid Render architecture, prices, login/provisioning instructions and
+`deploy/render.yaml` are **historical, unapproved proposal artifacts**, superseded
+by this ELMO candidate.
 
-## Official provider behavior checked 2026-11-02
+## Primary references checked 2026-11-02
 
-* [Blueprint fields and schema](https://render.com/docs/blueprint-spec): configuration reference.
-* [Compute plan IDs](https://render.com/docs/compute-plans): current resource names.
-* [Blueprint setup](https://render.com/docs/infrastructure-as-code): review before Deploy Blueprint.
-* [One-off jobs](https://render.com/docs/one-off-jobs): build/config snapshot and billing.
-* [API authentication](https://render.com/docs/api): owner API key setup/revocation.
-* [CLI validation](https://render.com/docs/cli-reference): `render blueprints validate`.
-* [CLI login/workspace setup](https://render.com/docs/cli): local account authorization.
-* [SSH access/setup](https://render.com/docs/ssh): public-key registration, Docker prerequisites and ephemeral billing.
-* [Managed TLS](https://render.com/docs/tls): host-provided certificates.
-* [Database recovery](https://render.com/docs/postgresql-backups): recovery/export operations.
-* [Current Deploys UI](https://render.com/blog/deploys-page): Live badge and rollback.
+- [Cloudflare remote tunnel setup](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/get-started/create-remote-tunnel/): dashboard connector/routes.
+- [Docker Desktop settings](https://docs.docker.com/desktop/settings-and-maintenance/settings/): startup after sign-in.
+- [Compose secrets](https://docs.docker.com/compose/how-tos/use-secrets/): service-scoped file mounts.
+- [Docker volume lifecycle](https://docs.docker.com/engine/storage/volumes/): persistence boundaries.
+- [PostgreSQL pg_dump](https://www.postgresql.org/docs/18/app-pgdump.html) and [pg_restore](https://www.postgresql.org/docs/18/app-pgrestore.html): logical backup/recovery.
