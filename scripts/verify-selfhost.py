@@ -1,6 +1,7 @@
 """Exercise the selfhost package in disposable Docker resources; never start its tunnel."""
 
 import argparse
+from http.client import RemoteDisconnected
 import json
 import os
 from pathlib import Path
@@ -46,7 +47,6 @@ def main():
         GITPULSE_ORIGIN="https://gitpulse.tmcsolutions-org.net",
     )
     compose = [
-        "docker",
         "compose",
         "--project-name",
         project,
@@ -61,7 +61,10 @@ def main():
     compose[compose.index("deploy/selfhost.env.example")] = str(safe_env_file)
 
     def run(*command, allow_failure=False):
-        result = subprocess.run(command, cwd=root, env=env, capture_output=True, text=True)
+        # Fixed executable plus argv, with no shell parsing or user-selected program.
+        result = subprocess.run(
+            ["docker", *command], shell=False, cwd=root, env=env, capture_output=True, text=True
+        )
         if any(value in result.stdout + result.stderr for value in values.values()):
             raise RuntimeError("A secret appeared in child output; output withheld")
         if result.returncode and not allow_failure:
@@ -117,7 +120,6 @@ def main():
 
     try:
         missing_secret = run(
-            "docker",
             "run",
             "--rm",
             "--network",
@@ -146,7 +148,12 @@ def main():
             try:
                 assert http("/api/health") == 503
                 break
-            except (urllib.error.URLError, TimeoutError):
+            except (
+                urllib.error.URLError,
+                TimeoutError,
+                ConnectionError,
+                RemoteDisconnected,
+            ):
                 if time.monotonic() > deadline:
                     raise
                 time.sleep(1)
