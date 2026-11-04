@@ -1,4 +1,134 @@
-# Verification record — October 15, 2026
+# Verification record
+
+## Public ELMO release — November 3, 2026
+
+The approved deployment is live at [gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/).
+This dated update supersedes the pending deployment/DNS statements in the
+historical sections below. [Full live receipt and limitations](live-release.md).
+
+- Public root and health returned 200 with normal TLS validation; same/foreign
+  Origin POST refresh returned 403. An external Exa fetch retrieved the public
+  dashboard and expected synthetic metrics.
+- Public read-only browser checks: **2 passed, 1 deselected** in 10.75 seconds;
+  failure-injection/manual-refresh test excluded from production. Fonts, paired
+  IRIS/green charts, VOID plots, computed contrast, keyboard operation, mobile
+  overflow, search and pagination passed. [Desktop capture](public-dashboard.png).
+- App-only restart preserved run `b7ae66db-c787-4ce6-aade-47d0c7816fe5`, load
+  `2026-11-03T17:27:00.498459+00:00`, two import runs, 44 rows and exact metrics
+  **7h / 14d / 20 / 15**. No seed/import was invoked by the restart verification.
+- Actual reader connection, denied writes, private database/no host port and
+  loopback app binding were verified on ELMO. Connector readiness returned 200
+  with four connections. No native PostgreSQL/JARVIS settings were changed.
+- Exact operator-source `510535304dfb671b5c30a5465107bdd06034b5b0` passed
+  [push CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687858818)
+  and [PR CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687866846):
+  50 Python/PostgreSQL tests, three isolated browser tests, two TypeScript tests,
+  lint/type/build, zero Python/npm runtime audit findings and disposable selfhost
+  isolation/restart/recovery contract. Running app source remains approved dca6823;
+  later helper/document changes do not imply the running image was rebuilt.
+- A protected on-ELMO baseline dump exists. No host reboot, pre-login Docker
+  recovery, off-host backup, fresh-cluster recovery or production rollback was
+  executed. No automatic monitoring/backup task was installed. Main merge excluded.
+
+## Historical ELMO selfhost candidate — November 2, 2026
+
+The owner declined additional hosting subscriptions, confirmed always-on hardware,
+and selected `gitpulse.tmcsolutions-org.net`. The active candidate is now
+`deploy/selfhost.compose.yaml`; the earlier paid Render package below is historical,
+unapproved and superseded. **No production database, public tunnel or DNS route has
+been created.** The selected hostname currently returns DNS name does not exist.
+
+Observed local verification of the actual selfhost package:
+
+- Built the Node/Python image including `start-selfhost.sh`. Pulled pinned
+  cloudflared 2026.10.7 and verified its version and `--token-file` support without
+  network access from the version/help containers.
+- `python scripts/verify-selfhost.py --image gitpulse:selfhost-verify` passed against
+  a uniquely named disposable Docker project: private PG18 without host ports,
+  loopback-only app, missing-secret rejection, zero implicit schema writes before
+  explicit migration/seed, exact **44 / 7h / 14d / 20 / 15** fixture results,
+  reader SELECT access with persistent write/CREATE rejection, 403 refresh with
+  same/foreign Origin, identical restart snapshot and same-cluster backup/restore.
+- Reader-role SQL repeated safely and rejected four independently induced unsafe
+  cases: owned table, schema CREATE, PUBLIC UPDATE, and column-level UPDATE. These
+  mutations were isolated test fixtures and were removed. No public tunnel started.
+  The script removed only its own disposable containers/network/volume.
+- Windows PowerShell secret generation produced current-user/SYSTEM-only protected
+  directory ACLs, distinct random credentials, ignored file paths and refusal to
+  overwrite. A non-root container read the ACL-protected DSN mount without printing
+  its value. No production credential files or actual tunnel token were created.
+- Compose validation, PowerShell parsing, Ruff lint/format and diff checks passed.
+  Independent review's reader-ownership/CREATE finding was corrected; final source
+  and operator-document review reported no remaining must-fix findings.
+
+CI adds a separate `selfhost` job that builds the image and executes the same
+disposable runtime/recovery contract, alongside the existing 41 PostgreSQL/Python,
+3 browser and 2 TypeScript checks and runtime audit gates. Final exact-source CI and
+image provenance are recorded in the ignored `artifacts/elmo-release-approval.md`
+after publication; [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1) is the
+authoritative candidate head/checks view. Earlier green CI does not prove this new
+job until it actually passes.
+
+Public HTTPS/UI, actual Cloudflare account/route, production SQL/seed, host reboot
+and pre-login Docker recovery, fresh-cluster restoration and operational availability
+remain unverified. [Owner cards](selfhost.md) distinguish each pending gate. Existing
+ELMO power/internet/domain costs remain; the proposal adds no platform subscription.
+
+## Release hardening — November 2, 2026
+
+This section supersedes the historical dependency/CI/production-browser caveats
+below. Public deployment remains unverified; no production resources were created.
+
+- Clean local/remote base: `1eee97dd6706db2c1dd8c493c011204aecb225ad`.
+  [Its hosted CI passed](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/38938786757):
+  41 Python/PostgreSQL tests, 3 production-server browser tests, 2 TypeScript tests,
+  lint, type checks and build. The earlier production-refresh policy blocker was
+  subsequently covered by those CI browser tests.
+- Patched certifi from 2026.7.22 to 2026.10.23, regenerated hashes with uv 0.10.10,
+  and added pinned pip-audit 2.10.1 plus lock/export consistency checks to CI.
+  Baseline audit failed; patched Python runtime audit returned zero findings.
+  npm runtime audit also returned zero findings. Full npm audit retains 16 moderate
+  development entries from one minimatch advisory; see [security evidence](release-security.md).
+- Fresh real PostgreSQL 18 tests: **41 passed, 3 browser tests deselected**, no
+  integration skips. Fresh browser tests against the rebuilt production Docker
+  server: **3 passed**. Tests cover fonts, paired chart colors, sampled contrast,
+  keyboard access, responsive layout, search/pagination, refresh authorization,
+  cooldown, real failed writes, last-good preservation and recovery.
+- TypeScript tests **2 passed**; Ruff lint/format, TypeScript check, frontend lint,
+  local production build and Docker build passed. Local Node is 25.9.0; Docker/CI
+  use the pinned Node 24 runtime. Build warned about an unrelated parent-directory
+  lockfile; the Docker build context stays inside this repository.
+- Disposable resources use Compose project `gitpulse-release-20261102`, PostgreSQL
+  loopback port 55441, application port 3018, separate test/CLI/browser databases.
+  Fresh approved schema/seed startup produced 44 records and metrics **7h / 14d /
+  20 open issues / 15 window merges**. Image runtime readback: certifi 2026.10.23.
+  Local image config ID:
+  `sha256:361af791651cad45921bd4b0e7d9a8be84c9c472cb1a6d698b6333b859cf68c9`.
+  This local image is not a remotely published registry artifact.
+- The final image includes the Render Docker SSH prerequisite: non-root UID 10001,
+  `/home/gitpulse/.ssh` mode 0700 owned by gitpulse. A second isolated database
+  verified Node-only startup leaves **zero public tables**, returns health 503,
+  and performs no implicit initialization. Explicit approved migration/seed then
+  returned health 200, 44 rows and the expected metrics. Refresh returned 403 both
+  without credentials and with an unrelated Origin. An app restart preserved the
+  exact dataset identity, reference/load time, metrics, counts and single audit run.
+  Two read-only browser checks passed again against this final image.
+- Render Blueprint passed the current official JSON Schema. The checksum-verified
+  local Render CLI 2.34.0 could not run account-aware validation: `no workspace
+  specified and no default workspace set`. Account/workspace validation is pending.
+  Independent package review found two operational gaps; both were corrected and
+  the targeted rereview reported no remaining must-fix findings.
+- GitHub deployment records and the connected Vercel project list were empty.
+  No compatible existing host/account access was discovered. Proposed Render
+  configuration, costs, owner gates and operations are documented separately.
+  Patched application candidate `f8b3555c7beb9b03624c53cb75ec4c01854b8bc8`
+  [passed hosted CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41521390933)
+  including the new Python audit gate, 41 PostgreSQL/Python tests and all 3 browser
+  tests. [Release PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1) contains
+  the current candidate; its exact final head/CI are also recorded in the local
+  `artifacts/portfolio-release-receipt.md` after publication.
+
+The historical records below retain their original dates and evidence scope.
 
 ## JARVIS–TMC theme update — October 16, 2026
 

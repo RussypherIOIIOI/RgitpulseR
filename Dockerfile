@@ -16,7 +16,8 @@ RUN npm ci --omit=dev --ignore-scripts
 FROM python:3.12-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258
 RUN apt-get update && apt-get install -y --no-install-recommends libstdc++6 \
     && rm -rf /var/lib/apt/lists/* \
-    && useradd --create-home --uid 10001 gitpulse
+    && useradd --create-home --uid 10001 gitpulse \
+    && install -d -m 0700 -o gitpulse -g gitpulse /home/gitpulse/.ssh
 WORKDIR /app
 COPY --from=web /usr/local/bin/node /usr/local/bin/node
 COPY pyproject.toml requirements.lock ./
@@ -31,6 +32,7 @@ COPY next.config.mjs ./next.config.mjs
 COPY app/fonts/OFL.txt app/fonts/FONTLOG.txt ./licenses/MatrixSans/
 COPY migrations ./migrations
 COPY scripts/start-container.sh ./scripts/start-container.sh
+COPY scripts/start-selfhost.sh ./scripts/start-selfhost.sh
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PATH="/opt/venv/bin:$PATH"
 USER gitpulse
 EXPOSE 3000
