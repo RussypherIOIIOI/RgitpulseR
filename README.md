@@ -5,15 +5,15 @@ metrics, issue ages and a searchable activity table for **one public GitHub repo
 Python collects the data; PostgreSQL owns persistence and metric calculations;
 Next.js renders a responsive TypeScript dashboard.
 
-The interface follows the JARVIS–TMC standard: IRIS **#7F00FF**, NVIDIA GREEN
-**#76B900**, and VOID **#08070D**, with fine panel borders and lavender supporting
-tones. Matrix Sans Regular supplies headings and metrics; Matrix Sans Video supplies
-interface text. Both webfonts are bundled from the owner's supplied theme package,
-self-hosted through Next.js and distributed with their SIL Open Font License and font log.
-Brighter secondary text and clearer borders strengthen the dark theme. Neutral panels
-pair IRIS and green accents together. Both charts have VOID plot backgrounds: IRIS
-merge bars carry green edges, while green issue-age bars carry IRIS end caps.
-Small explanatory/data labels are checked against a 7:1 contrast target.
+The interface uses the official brand system of **The Meredith Collective** (TMC):
+Void **#08070D** ground, Iris **#7F00FF** actions and marks, Circuit **#76B900** status,
+and an Ivory **#FAF9F5** editorial band, all flat color with 1px rules. Type follows the
+TMC roles: Poppins headings, Lora reading text, Space Grotesk labels and Matrix Sans
+readouts, self-hosted through `next/font` with their SIL Open Font License texts. The
+hero's LED field and every figure on the page come from the published snapshot.
+Secondary text on the dark ground is checked against a 7:1 target and the Ivory band
+against 4.5:1. See
+[the design system notes](docs/design-system.md).
 
 ![Live GitPulse dashboard with deterministic synthetic data](docs/public-dashboard.png)
 

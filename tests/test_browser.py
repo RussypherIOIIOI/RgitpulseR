@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright, expect
 pytestmark = pytest.mark.browser
 
 
-def test_jarvis_theme_fonts_contrast_and_keyboard_access():
+def test_tmc_theme_fonts_contrast_and_keyboard_access():
     url = os.environ.get("GITPULSE_BROWSER_URL")
     if not url:
         pytest.skip("Set GITPULSE_BROWSER_URL to the running isolated demo")
@@ -40,14 +40,22 @@ def test_jarvis_theme_fonts_contrast_and_keyboard_access():
             primary: styles('.filters button').backgroundColor,
             ready: styles('.connection-dot').backgroundColor,
             bodyFont: styles('body').fontFamily, headingFont: styles('h1').fontFamily,
+            labelFont: styles('.eyebrow').fontFamily, metricFont: styles('.metric').fontFamily,
             fonts: [...document.fonts].map(f => ({family: f.family, status: f.status})) };
         }""")
+        # TMC tokens: Void ground, Iris primary action, Circuit status.
         assert appearance["background"] == "rgb(8, 7, 13)"
         assert appearance["primary"] == "rgb(127, 0, 255)"
         assert appearance["ready"] == "rgb(118, 185, 0)"
-        assert "Matrix" in appearance["bodyFont"]
-        assert "Matrix" in appearance["headingFont"]
-        assert any("Matrix" in f["family"] and f["status"] == "loaded" for f in appearance["fonts"])
+        # TMC type roles: Lora body, Poppins display, Space Grotesk labels, Matrix Sans readouts.
+        assert "Lora" in appearance["bodyFont"]
+        assert "Poppins" in appearance["headingFont"]
+        assert "Space" in appearance["labelFont"] and "Grotesk" in appearance["labelFont"]
+        assert "Matrix" in appearance["metricFont"]
+        for family in ("Lora", "Poppins", "Grotesk", "Matrix"):
+            assert any(
+                family in f["family"] and f["status"] == "loaded" for f in appearance["fonts"]
+            ), family
         assert failed_fonts == []
         chart_colors = page.evaluate("""() => {
           const style = selector => getComputedStyle(document.querySelector(selector));
@@ -56,18 +64,23 @@ def test_jarvis_theme_fonts_contrast_and_keyboard_access():
             weeklyFill: style('.bar:not(.partial)').backgroundColor,
             weeklyAccent: style('.bar:not(.partial)').borderTopColor,
             ageFill: style('.age-track > span').backgroundColor,
-            ageAccent: style('.age-track > span').backgroundImage };
+            gradients: ['.bar:not(.partial)', '.age-track > span', '.kpi', '.panel', '.hero',
+              '.pulse', '.btn-primary'].filter(s => document.querySelector(s) &&
+              style(s).backgroundImage.includes('gradient')) };
         }""")
         assert chart_colors["weeklyPlot"] == chart_colors["agePlot"] == "rgb(8, 7, 13)"
         assert chart_colors["weeklyFill"] == "rgb(127, 0, 255)"
         assert chart_colors["weeklyAccent"] == "rgb(118, 185, 0)"
         assert chart_colors["ageFill"] == "rgb(118, 185, 0)"
-        assert "rgb(127, 0, 255)" in chart_colors["ageAccent"]
+        # The brand system keeps color flat: no gradients on charts, panels or actions.
+        assert chart_colors["gradients"] == []
         # Check actual computed foreground/background pairs, not just token declarations.
         pairs = page.evaluate("""() => ['.filters button','input','.state.open','.state.closed',
           '.state.merged','.readonly','th','td:nth-child(2) a','.demo-note',
           '.kpi > span','.panel-heading p','.chart-note','.bar-label','.freshness',
-          '.rail-description','.filters label','.author','td time'].flatMap(selector => {
+          '.hero-lead','.filters label','.author','td time','.ledger dt','.metric small',
+          '.pulse figcaption','.hero-copy > .eyebrow','.site-nav a','.count-chip',
+          '.principle p:not(.eyebrow)','.principle .eyebrow','.fine-print'].flatMap(selector => {
             const el = document.querySelector(selector); if (!el) return [];
             const css = getComputedStyle(el); let parent = el; let bg = css.backgroundColor;
             while ((bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') && parent.parentElement) {
@@ -94,7 +107,13 @@ def test_jarvis_theme_fonts_contrast_and_keyboard_access():
                     ".chart-note",
                     ".bar-label",
                     ".freshness",
-                    ".rail-description",
+                    ".hero-lead",
+                    ".ledger dt",
+                    ".metric small",
+                    ".pulse figcaption",
+                    ".hero-copy > .eyebrow",
+                    ".site-nav a",
+                    ".fine-print",
                     ".filters label",
                     ".author",
                     "td time",
@@ -112,6 +131,23 @@ def test_jarvis_theme_fonts_contrast_and_keyboard_access():
         )
         page.set_viewport_size({"width": 390, "height": 844})
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+        page.set_viewport_size({"width": 320, "height": 700})
+        assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+        # At 640px (1280px at 200% zoom) the maintainer form must open fully on screen.
+        controls = page.get_by_text("Maintainer controls", exact=True)
+        if controls.count():
+            page.set_viewport_size({"width": 640, "height": 900})
+            controls.click()
+            box = page.locator(".maintainer form").bounding_box()
+            assert box and box["x"] >= 0 and box["x"] + box["width"] <= 640, box
+        # Reduced motion turns off every entrance and scroll-driven animation.
+        calm = browser.new_page(viewport={"width": 1440, "height": 1100}, reduced_motion="reduce")
+        calm.goto(url)
+        calm.wait_for_load_state("networkidle")
+        animated = calm.evaluate("""() => ['.hero-copy > h1', '.hero-art', '.pulse-col i.on', '.kpi',
+          '.bar'].filter(s => document.querySelector(s) &&
+          getComputedStyle(document.querySelector(s)).animationName !== 'none')""")
+        assert animated == []
         browser.close()
 
 

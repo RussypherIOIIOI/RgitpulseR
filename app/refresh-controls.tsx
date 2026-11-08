@@ -7,7 +7,7 @@ export default function RefreshControls({ enabled }: { enabled: boolean }) {
   const [key, setKey] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
-  if (!enabled) return <span className="readonly">Read-only view</span>;
+  if (!enabled) return <span className="readonly"><span className="status-dot" aria-hidden="true" />Read-only view</span>;
   async function refresh(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
@@ -28,7 +28,7 @@ export default function RefreshControls({ enabled }: { enabled: boolean }) {
       <label htmlFor="maintainer-key">Maintainer key</label>
       <input id="maintainer-key" type="password" autoComplete="off" value={key}
         onChange={(e) => setKey(e.target.value)} required />
-      <button disabled={busy} type="submit">{busy ? "Refreshing…" : "Refresh dataset"}</button>
+      <button className="btn btn-primary" disabled={busy} type="submit">{busy ? "Refreshing…" : "Refresh dataset"}</button>
       <p role="status" aria-live="polite">{message}</p>
     </form>
   </details>;

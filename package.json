@@ -9,7 +9,7 @@
     "dev": "next dev --hostname 127.0.0.1 --port 3017",
     "build": "next build --webpack",
     "start": "next start --hostname 0.0.0.0 --port 3000",
-    "check": "tsc --noEmit",
+    "check": "next typegen --webpack && tsc --noEmit",
     "lint": "eslint app lib tests/web --max-warnings 0",
     "test": "tsx --test tests/web/*.test.ts"
   },
