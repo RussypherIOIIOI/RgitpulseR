@@ -3,8 +3,9 @@
 ## TMC brand UI release — November 8, 2026
 
 The merged TMC redesign (`main` at `67a74478b8b0fe480c81939640c3382b188a1aa0`)
-replaced the running app image on ELMO. This supersedes the running-source statements
-in the November 3 section below. [Full receipt](live-release.md).
+replaced the running app image on ELMO. PRs #1–#3 are merged. This supersedes the
+running-source and merge-status statements in the dated sections below.
+[Full receipt](live-release.md).
 
 - **CI:** the [push CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/42519456852)
   for that exact SHA passed `verify` and `selfhost`.
