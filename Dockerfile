@@ -30,6 +30,9 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=web /app/package.json ./package.json
 COPY next.config.mjs ./next.config.mjs
 COPY app/fonts/OFL.txt app/fonts/FONTLOG.txt ./licenses/MatrixSans/
+COPY app/fonts/Poppins-OFL.txt ./licenses/Poppins/OFL.txt
+COPY app/fonts/Lora-OFL.txt ./licenses/Lora/OFL.txt
+COPY app/fonts/SpaceGrotesk-OFL.txt ./licenses/SpaceGrotesk/OFL.txt
 COPY migrations ./migrations
 COPY scripts/start-container.sh ./scripts/start-container.sh
 COPY scripts/start-selfhost.sh ./scripts/start-selfhost.sh
