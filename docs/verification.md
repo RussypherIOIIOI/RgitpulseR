@@ -1,5 +1,20 @@
 # Verification record
 
+## TMC brand UI release — November 8, 2026
+
+The merged TMC redesign (`main` at `67a74478b8b0fe480c81939640c3382b188a1aa0`)
+replaced the running app image on ELMO. This supersedes the running-source statements
+in the November 3 section below. [Full receipt](live-release.md).
+
+- **CI:** the [push CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/42519456852)
+  for that exact SHA passed `verify` and `selfhost`.
+- **HTTP:** private and public health and root returned 200, an unknown path returned
+  404, and same/foreign-origin refresh POSTs returned 403.
+- **Reader and data:** reader identity is unchanged. Row count, import runs and
+  `gitpulse_dashboard()` output were byte-identical before and after the swap.
+- **Browser:** public read-only checks gave **2 passed, 1 deselected** in 17.42
+  seconds. [Desktop capture](public-dashboard.png).
+
 ## Public ELMO release — November 3, 2026
 
 The approved deployment is live at [gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/).
@@ -12,7 +27,7 @@ historical sections below. [Full live receipt and limitations](live-release.md).
 - Public read-only browser checks: **2 passed, 1 deselected** in 10.75 seconds;
   failure-injection/manual-refresh test excluded from production. Fonts, paired
   IRIS/green charts, VOID plots, computed contrast, keyboard operation, mobile
-  overflow, search and pagination passed. [Desktop capture](public-dashboard.png).
+  overflow, search and pagination passed.
 - App-only restart preserved run `b7ae66db-c787-4ce6-aade-47d0c7816fe5`, load
   `2026-11-03T17:27:00.498459+00:00`, two import runs, 44 rows and exact metrics
   **7h / 14d / 20 / 15**. No seed/import was invoked by the restart verification.
@@ -253,8 +268,9 @@ uv run --extra dev pytest tests/test_browser.py -q
 
 That key is a public test fixture, never a deployment secret. Windows tests use
 installed Edge. On Linux install Chromium with `uv run playwright install --with-deps
-chromium`. Screenshots are captured in ignored `artifacts/`; the README includes a
-real captured image in `docs/dashboard.png`. Tests explicitly wait for the new
+chromium`. Screenshots are captured in ignored `artifacts/`. The README shows the
+public deployment capture `docs/public-dashboard.png`; `docs/dashboard.png` is the
+original October 16 local capture, kept for history. Tests explicitly wait for the new
 publication timestamp after a successful refresh, avoiding a race with router refresh.
 
 ## Supported evidence boundaries
