@@ -1,7 +1,10 @@
 # Owner actions: ELMO public DEMO
 
-Updated 2026-11-03. **Deployment and public launch complete:**
+Updated 2026-11-08. **Deployment and public launch complete:**
 [live demo](https://gitpulse.tmcsolutions-org.net/) and [verified receipt](live-release.md).
+On November 8 the owner had the merged TMC brand UI deployed. That was an app-only
+image upgrade from `main` at `67a74478b8b0fe480c81939640c3382b188a1aa0`, with no
+database, credential or tunnel change; see its receipt.
 The owner approved existing ELMO hardware and
 `gitpulse.tmcsolutions-org.net`. The active candidate requires **$0 additional
 platform subscription**; existing domain, hardware, electricity and internet costs
@@ -27,8 +30,8 @@ Remaining owner decisions concern host startup/reboot verification, protected
 off-host backup and fresh-cluster recovery. These were excluded from this launch;
 no recurring jobs or host settings were changed. Card 7's local baseline backup
 exists and isolated test recovery passed; production recovery remains unverified.
-Main merge also remains outside the approved scope. No action is required to view
-the public demo. Use the live receipt's health/recovery commands after host changes.
+The November 3 launch excluded the main merge. PRs #1–#3 have since merged, and the
+November 8 release runs `main`. No action is required to view the public demo. Use the live receipt's health/recovery commands after host changes.
 
 Return only source/image IDs, CI links, container/volume names, tunnel ID, hostname,
 status codes, metric/count comparisons, backup hash/time and durations. Never

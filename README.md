@@ -19,21 +19,22 @@ against 4.5:1. See
 
 ## Portfolio release
 
-The read-only synthetic demo is **live at [gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/)**,
-verified November 3, 2026 through public HTTPS, desktop/mobile browser tests and an
-external page fetch. Existing ELMO hardware runs a private PostgreSQL 18 container
-and a reader-only Node app behind Cloudflare Tunnel, with **$0 additional platform
-subscription**. Existing domain, hardware, electricity and internet costs remain.
+The read-only synthetic demo is **live at [gitpulse.tmcsolutions-org.net](https://gitpulse.tmcsolutions-org.net/)**.
+It was first verified on November 3, 2026 through public HTTPS, desktop and mobile
+browser tests, and an external page fetch. The TMC brand UI from `main` went live on
+November 8, 2026 and passed the public HTTP and browser checks again. Existing ELMO
+hardware runs a private PostgreSQL 18 container and a reader-only Node app behind
+Cloudflare Tunnel, with **$0 additional platform subscription**. Existing domain,
+hardware, electricity and internet costs remain.
 
 See the [live release evidence and operations](docs/live-release.md),
 [self-host runbook](docs/selfhost.md), [release scope](docs/production-release.md)
 and [owner actions](docs/owner-actions.md). Availability depends on ELMO, Docker,
 power and internet; unattended reboot recovery and off-host disaster recovery
-remain unverified. [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1)
-holds the release changes and remains open; the running image source is recorded
-separately from repository/operator-document commits. The paid Render proposal is
-historical and inactive. Root Compose below is the local demo; its public
-placeholder password must not be deployed.
+remain unverified. The release changes are merged into `main`. The live receipt
+records the running image's exact source and ID, separately from later
+documentation commits. The paid Render proposal is historical and inactive. Root
+Compose below is the local demo; its public placeholder password must not be deployed.
 
 ## Run the demo
 

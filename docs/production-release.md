@@ -73,16 +73,16 @@ reference `2026-10-12T12:00:00Z`. No real GitHub data is approved.
 
 | Item | Current state / required receipt |
 | --- | --- |
-| Approved running application source | `dca6823f4567c0a5caa1c286e5d20f5ed409ace0` |
-| Current review | [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1), open; main merge was excluded |
+| Running application source | `67a74478b8b0fe480c81939640c3382b188a1aa0` on `main` (TMC brand UI, November 8); previously `dca6823f4567c0a5caa1c286e5d20f5ed409ace0` |
+| Current review | PRs #1–#3 merged into `main`; [push CI](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/42519456852) succeeded for the running SHA |
 | Operator helper source | `510535304dfb671b5c30a5465107bdd06034b5b0`; token parser and ACL checks, no app changes |
 | Exact helper-source CI | [Push](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687858818) and [PR](https://github.com/RussypherIOIIOI/RgitpulseR/actions/runs/41687866846) succeeded |
-| Actual running local image ID | `sha256:cf9f02b20d806d0013f9bb1dd2cebef72aa679a6de0efb4750e5b918b23393a6`; approved-source filesystem comparison in [receipt](live-release.md) |
+| Actual running local image ID | `sha256:b547f4d66831c67c717024039401ccae98e89e337f13c075832c0beda201f05c`; rollback target `sha256:cf9f02b20d806d0013f9bb1dd2cebef72aa679a6de0efb4750e5b918b23393a6` (November 3); details in [receipt](live-release.md) |
 | Registry digest | **Not claimed**; local config ID is not a registry manifest digest |
 | ELMO container/volume and SQL/seed | Running; 44 synthetic rows, dedicated volume, reader-only app |
 | Tunnel ID and exact route | `d2100870-8492-4f08-b99c-c6cdb0c6aa37`; approved hostname to `http://app:3000`, four ready connections |
-| Public HTTPS/health/UI/read-only/privacy | HTTP 200 root/health; same/foreign-origin refresh 403; two read-only browser tests and external page fetch passed |
-| Restart/reboot, backup/restore, rollback | App restart preserved snapshot; protected local dump exists; isolated same-cluster recovery passed. Host reboot, off-host/fresh-cluster recovery and production rollback remain unverified |
+| Public HTTPS/health/UI/read-only/privacy | HTTP 200 root/health; same/foreign-origin refresh 403; two read-only browser tests and external page fetch passed; HTTP and browser checks rerun after the November 8 image swap |
+| Restart/reboot, backup/restore, rollback | App restart preserved snapshot; November 8 image swap left the dataset byte-identical; protected local dump exists; isolated same-cluster recovery passed. Host reboot, off-host/fresh-cluster recovery and production rollback remain unverified |
 
 Public deployment evidence is recorded separately from local/CI results in the
 [live receipt](live-release.md). Failure-injection browser tests run only against

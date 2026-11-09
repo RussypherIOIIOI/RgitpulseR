@@ -1,6 +1,6 @@
 # ELMO self-host runbook
 
-Updated 2026-11-03. Target: existing ELMO, read-only synthetic DEMO at
+Updated 2026-11-08. Target: existing ELMO, read-only synthetic DEMO at
 `https://gitpulse.tmcsolutions-org.net`, named Cloudflare tunnel `gitpulse-elmo`.
 The URL is **live and publicly verified**; see [the release receipt](live-release.md).
 Additional platform subscription:
@@ -13,11 +13,20 @@ release. Do not rerun initialization or regenerate credentials on the existing
 volume. Host settings/reboot and fresh-cluster production recovery were excluded
 and require their own approved scope. Return no credentials, tokens or DSNs.
 
+An app-only upgrade, with no schema, SQL or credential change, does not rerun these
+cards. Build and label the image from the clean reviewed commit as in card 2. Then
+change only `GITPULSE_IMAGE` in the existing `deploy/selfhost.env`, recreate only
+`app`, and repeat card 4's checks. Card 2's env and secret steps refuse an existing
+deployment by design. The November 8 TMC UI release followed this path; its
+[receipt](live-release.md) has the exact command and the rollback image.
+
 ## 1. Approve the exact release
 
 **Why owner needed:** new secrets, persistent data, SQL, host resources and public
-exposure. **Dependencies:** final reviewed [PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1)
-head and green required CI checks for that exact SHA; inspect Compose, migration 001,
+exposure. **Dependencies:** the final reviewed release commit and green required CI
+checks for that exact SHA. The November 3 launch used the head of
+[PR #1](https://github.com/RussypherIOIIOI/RgitpulseR/pull/1); the November 8 upgrade
+used `main` after PRs #1–#3 merged. Also: inspect Compose, migration 001,
 reader-role SQL and secret generator. The current approved SHA/image are recorded
 in [the live receipt](live-release.md); a future release needs its own exact receipt.
 
